@@ -7,6 +7,8 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100sp"
+        android:layout_marginBottom="100sp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/ZipCodeTitle"
         android:textAlignment="center"
@@ -16,5 +18,24 @@
         android:id="@+id/zipField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/ZipHint" />
+        android:fontFamily="sans-serif-condensed-light"
+        android:hint="@string/ZipHint"
+        android:textAlignment="center"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/curLocationMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100sp"
+        android:text="@string/currLocationTxt"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/useCurrLocationBtn"
+        android:textSize="18sp" />
 </LinearLayout>
