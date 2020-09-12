@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">TestFinder</string>
     <string name="title_activity_maps">Map</string>
-    <string name="ZipCodeTitle">Find a COVID testing site!</string>
+    <string name="ZipCodeTitle">Find a COVID testing site near you</string>
     <string name="ZipHint">Enter zipcode</string>
+    <string name="Search">Search</string>
     <string name="useCurrLocationBtn">use your current location</string>
     <string name="currLocationTxt">or click to</string>
 </resources>
