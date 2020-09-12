@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -17,9 +19,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -72,11 +79,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             //add marker on map
                             googleMap.addMarker(options);
+
+                            geoLocate(googleMap);
                         }
                     });
                 }
             }
         });
+    }
+
+    private void geoLocate(GoogleMap googleMap) {
+        String sString = "Covid Testing";
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(sString, 10);
+        }catch (IOException e) {
+
+        }
+
+        if(list.size() > 0) {
+            for(Address l : list) {
+                MarkerOptions options = new MarkerOptions().position(new LatLng(l.getLatitude(), l.getLongitude()));
+                googleMap.addMarker(options);
+            }
+        }
     }
 
     @Override
