@@ -7,11 +7,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="385dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="0sp"
         tools:context=".MapsActivity" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/nearSites"
+        android:textSize="20pt"
+        android:textStyle="bold" />
 
 </LinearLayout>
