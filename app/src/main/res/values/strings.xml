@@ -7,4 +7,5 @@
     <string name="useCurrLocationBtn">use your current location</string>
     <string name="currLocationTxt">or click to</string>
     <string name="nearSites">Sites Near You</string>
+    <string name="gif">Location gif</string>
 </resources>

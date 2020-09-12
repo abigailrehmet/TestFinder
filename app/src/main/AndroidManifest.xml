@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ZipCodeActivity"
-            android:label="Zip">
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
