@@ -87,8 +87,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onMapReady(GoogleMap googleMap) {
                             //mMap = googleMap;
                             if(zip.equals("None")) {
-                                geoLocate(googleMap, zip);
-                            } else {
                                 //initialize lat lng
                                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 //create marker options
@@ -97,20 +95,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                                 //add marker on map
                                 googleMap.addMarker(options);
+
+                                //Initialize url
+                                String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
+                                        "location=" + location.getLatitude() + "," + location.getLongitude() + //location latitude and lagitude
+                                        "&radius=25000" + //Nearby radius
+                                        "&keyword=" + "covid testing" + //Place type
+                                        "&sensor=true" + //Sensor
+                                        "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
+
+                                //Execute place task method and download json data
+                                new PlaceTask().execute(url);
+                            } else {
+                                geoLocate(googleMap, zip);
                             }
-
-
-                            //Initialize url
-                            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
-                                    "location=" + location.getLatitude() + "," + location.getLongitude() + //location latitude and lagitude
-                                    "&radius=25000" + //Nearby radius
-                                    "&keyword=" + "covid testing" + //Place type
-                                    "&sensor=true" + //Sensor
-                                    "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
-
-                            //Execute place task method and download json data
-                            new PlaceTask().execute(url);
-
                         }
                     });
                 }
@@ -138,6 +136,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkerOptions options = new MarkerOptions().position(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
                 googleMap.addMarker(options);
+
+            //Initialize url
+            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
+                    "location=" + list.get(0).getLatitude() + "," + list.get(0).getLongitude() + //location latitude and lagitude
+                    "&radius=25000" + //Nearby radius
+                    "&keyword=" + "covid testing" + //Place type
+                    "&sensor=true" + //Sensor
+                    "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
+
+            //Execute place task method and download json data
+            new PlaceTask().execute(url);
         }
     }
 
