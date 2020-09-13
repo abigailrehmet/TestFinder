@@ -10,12 +10,14 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,8 +26,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -80,7 +92,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //add marker on map
                             googleMap.addMarker(options);
 
-                            geoLocate(googleMap);
+                            mMap = googleMap;
+
+                            //Initialize url
+                            String url = "https://maps.google.com/maps/api/place/nearbysearch/json" + //Url
+                                    "?location=" + location.getLatitude() + "," + location.getLongitude() + //location latitude and lagitude
+                                    "&radius=5000" + //Nearby radius
+                                    "&types=" + "Covid Testing" + //Place type
+                                    "&sensor=true" + //Sensor
+                                    "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
+
+                            //Execute place task method and download json data
+                            new PlaceTask().execute(url);
+
+                            //geoLocate(googleMap);
+
+
                         }
                     });
                 }
@@ -89,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void geoLocate(GoogleMap googleMap) {
-        String sString = "Covid Testing";
+        String sString = "";
         Geocoder geocoder = new Geocoder(MapsActivity.this);
         List<Address> list = new ArrayList<>();
         try{
@@ -142,4 +169,106 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private class PlaceTask extends AsyncTask<String,Integer,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+           String data = null;
+            try {
+                //Initialize data
+                data = downloadUrl(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //Execute parser task
+            new ParserTask().execute(s);
+        }
+    }
+
+    private String downloadUrl(String string) throws IOException {
+        //Initialize url
+        URL url = new URL(string);
+
+        //Initialize connection
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        //Connect connection
+        connection.connect();
+        //Initialize input stream
+        InputStream stream = connection.getInputStream();
+        //Initialize buffer reader
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        //Initialize string builder
+        StringBuilder builder = new StringBuilder();
+        //Initialize string variable
+        String line = "";
+        //Use while loop
+        while ((line = reader.readLine()) != null) {
+            //Append line
+            builder.append(line);
+        }
+        //Get append data
+        String data = builder.toString();
+        //Close reader
+        reader.close();
+        //Return data
+        return data;
+
+
+    }
+
+    private class ParserTask extends AsyncTask<String,Integer,List<HashMap<String,String>>>{
+
+        @Override
+        protected List<HashMap<String, String>> doInBackground(String... strings) {
+            //Create json parser class
+            JsonParser jsonParser = new JsonParser();
+            //Initialize hash map list
+            List<HashMap<String,String>> mapList = null;
+            JSONObject object = null;
+            try {
+                //Init json object
+                object = new JSONObject(strings[0]);
+                //Parse json object
+                mapList = jsonParser.parseResult(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Return map list
+            return mapList;
+        }
+
+        @Override
+        protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
+            //Clear map
+            //----------mMap.clear();------------
+            //Use for loop
+            for (int i = 0; i < hashMaps.size(); i++) {
+                //Initialize hsh map
+                HashMap<String,String> hashMapList = hashMaps.get(i);
+                //Get latitude
+                double lat = Double.parseDouble(hashMapList.get("lat"));
+                //Get longitude
+                double lng = Double.parseDouble(hashMapList.get("lng"));
+                //Get name
+                String name = hashMapList.get("name");
+                //Concat latitude and longitude
+                LatLng latLng = new LatLng(lat, lng);
+                //Init marker options
+                MarkerOptions options = new MarkerOptions();
+                //Set position
+                options.position(latLng);
+                //Set title
+                options.title(name);
+                //Add marker on map
+                mMap.addMarker(options);
+
+            }
+        }
+    }
 }
