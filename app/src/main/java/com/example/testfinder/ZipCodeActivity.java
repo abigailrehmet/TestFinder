@@ -2,14 +2,23 @@ package com.example.testfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ZipCodeActivity extends AppCompatActivity {
     Intent intent;
@@ -33,8 +42,20 @@ public class ZipCodeActivity extends AppCompatActivity {
                     public void onClick(View view)
                     {
                         Log.v("EditText", mEdit.getText().toString());
-                        intent.putExtra("ZIP", mEdit.getText().toString());
-                        startActivity(intent);
+                        Geocoder geocoder = new Geocoder(ZipCodeActivity.this);
+                        List<Address> list = new ArrayList<>();
+
+                        try{
+                            list = geocoder.getFromLocationName(mEdit.getText().toString(), 1);
+                        }catch (IOException e) {
+
+                        }
+                        if(list.size() > 0) {
+                            intent.putExtra("ZIP", mEdit.getText().toString());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(view.getContext(), "Invalid Zip Code!",Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 

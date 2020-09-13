@@ -46,8 +46,7 @@
         android:layout_marginTop="100sp"
         android:autofillHints="@string/ZipHint"
         android:layout_marginRight="40sp"
-        android:layout_marginLeft="40sp"/>
-
+        android:layout_marginLeft="40sp" />
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
