@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "739821211748",
+    "firebase_url": "https://test-finder-1a8ba.firebaseio.com",
+    "project_id": "test-finder-1a8ba",
+    "storage_bucket": "test-finder-1a8ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739821211748:android:a5f982446ac51895178f71",
+        "android_client_info": {
+          "package_name": "com.example.testfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739821211748-m1htkkbs5d3r0t43mf5sthur6f5dghkq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0sUB8LtU87qT0odLR-nCFKmiWITIzcag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739821211748-m1htkkbs5d3r0t43mf5sthur6f5dghkq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
