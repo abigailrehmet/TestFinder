@@ -12,22 +12,35 @@
 
         android:gravity="center"
         android:text="@string/site"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:layout_height="353dp"
+        android:background="@color/colorPrimary" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/reviews"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/review_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="314dp"
+        android:background="@color/colorPrimary"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:textSize="18sp" />
+
+
 
 </LinearLayout>
