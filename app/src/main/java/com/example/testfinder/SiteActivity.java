@@ -30,7 +30,6 @@ public class SiteActivity extends AppCompatActivity {
     private String place_id;
     private Button btn;
     private TextView message;
-    private DataSnapshot datasnap;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -55,36 +54,48 @@ public class SiteActivity extends AppCompatActivity {
             }
         });
 
+        buildRecyclerView();
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("reviews"); //Get by place_id
 
             mChildEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    ListView listView = findViewById(R.id.r);
-                    ArrayList<Messages> mes = new ArrayList<>();
+                    ArrayList<String> mes = new ArrayList<>();
                     if (dataSnapshot.getKey().equals(place_id)) {
-                        GenericTypeIndicator<ArrayList<Messages>> map = new GenericTypeIndicator<ArrayList<Messages>>() {
-                        };
-                        mes = dataSnapshot.child("message").getValue(map);
 
-                        ArrayList<String> arrayList = new ArrayList<>();
-
-                        for (Messages m : mes) {
-                            arrayList.add(m.getMessage());
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            mes.add(ds.child("message").getValue(String.class));
                         }
 
-                        listView.requestLayout();
-                        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                        listView.setAdapter(arrayAdapter);
+                        for (String m : mes) {
+                            Messages msg = new Messages(m);
+                            messageList.add(msg);
+                        }
+
+                        messagesAdapter.notifyDataSetChanged();
                     }
                 }
 
                 @Override
                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    ArrayList<String> mes = new ArrayList<>();
+                    if (dataSnapshot.getKey().equals(place_id)) {
 
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            mes.add(ds.child("message").getValue(String.class));
+                        }
+
+                        for (String m : mes) {
+                            Messages msg = new Messages(m);
+                            messageList.add(msg);
+                        }
+
+                        messagesAdapter.notifyDataSetChanged();
+
+                    }
                 }
-
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
