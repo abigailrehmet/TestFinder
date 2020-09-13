@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //Initialize url
                             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
                                     "location=" + location.getLatitude() + "," + location.getLongitude() + //location latitude and lagitude
-                                    "&radius=5000" + //Nearby radius
+                                    "&radius=25000" + //Nearby radius
                                     "&keyword=" + "covid testing" + //Place type
                                     "&sensor=true" + //Sensor
                                     "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
