@@ -21,6 +21,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,13 +66,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SupportMapFragment supportMapFragment;
     private String zip;
     private HashMap<String, String> ids;
-    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        intent = new Intent(this, SiteActivity.class);
         zip = getIntent().getStringExtra("ZIP");
         ids = new HashMap<>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -388,6 +387,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     more.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            Intent intent = new Intent(v.getContext(), SiteActivity.class);
                             startActivity(intent);
                         }
                     });

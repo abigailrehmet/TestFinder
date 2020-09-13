@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SiteActivity"></activity>
         <activity
             android:name=".ZipCodeActivity"
             android:label="Home"
@@ -38,11 +39,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU" />
 
-        <activity android:name=".MapsActivity"
-            android:parentActivityName=".ZipCodeActivity"
-            />
-        <activity android:name=".SiteActivity"
-            android:parentActivityName=".MapsActivity" />
+        <activity
+            android:name=".MapsActivity"
+            android:parentActivityName=".ZipCodeActivity" />
     </application>
 
 </manifest>
