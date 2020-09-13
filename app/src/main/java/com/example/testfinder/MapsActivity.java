@@ -45,11 +45,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FusedLocationProviderClient client;
     SupportMapFragment supportMapFragment;
+    private String zip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        zip = getIntent().getStringExtra("ZIP");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -83,16 +85,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            //initialize lat lng
-                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            //create marker options
-                            MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
-                            //Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                            //add marker on map
-                            googleMap.addMarker(options);
+                            //mMap = googleMap;
+                            if(zip.equals("None")) {
+                                geoLocate(googleMap, zip);
+                            } else {
+                                //initialize lat lng
+                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                //create marker options
+                                MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
+                                //Zoom map
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                //add marker on map
+                                googleMap.addMarker(options);
+                            }
 
-                            mMap = googleMap;
 
                             //Initialize url
                             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
@@ -105,9 +111,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //Execute place task method and download json data
                             new PlaceTask().execute(url);
 
-                            //geoLocate(googleMap);
-
-
                         }
                     });
                 }
@@ -115,21 +118,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    private void geoLocate(GoogleMap googleMap) {
-        String sString = "";
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMap.clear();
+    }
+
+    private void geoLocate(GoogleMap googleMap, String zip) {
+        String sString = zip;
         Geocoder geocoder = new Geocoder(MapsActivity.this);
         List<Address> list = new ArrayList<>();
         try{
-            list = geocoder.getFromLocationName(sString, 10);
+            list = geocoder.getFromLocationName(sString, 1);
         }catch (IOException e) {
 
         }
 
         if(list.size() > 0) {
-            for(Address l : list) {
-                MarkerOptions options = new MarkerOptions().position(new LatLng(l.getLatitude(), l.getLongitude()));
+                MarkerOptions options = new MarkerOptions().position(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
                 googleMap.addMarker(options);
-            }
         }
     }
 

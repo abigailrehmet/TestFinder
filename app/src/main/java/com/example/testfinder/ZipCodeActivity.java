@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.Marker;
 public class ZipCodeActivity extends AppCompatActivity {
     Intent intent;
     Button   mButton;
+    Button mButton2;
     EditText mEdit;
 
     @Override
@@ -22,6 +23,7 @@ public class ZipCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zip_code);
 
         mButton = findViewById(R.id.button);
+        mButton2 = findViewById(R.id.button2);
         mEdit   = findViewById(R.id.edittext);
         intent = new Intent(this, MapsActivity.class);
 
@@ -31,10 +33,20 @@ public class ZipCodeActivity extends AppCompatActivity {
                     public void onClick(View view)
                     {
                         Log.v("EditText", mEdit.getText().toString());
+                        intent.putExtra("ZIP", mEdit.getText().toString());
                         startActivity(intent);
                     }
                 });
 
+        mButton2.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        intent.putExtra("ZIP", "None");
+                        startActivity(intent);
+                    }
+                });
 
 
     }
