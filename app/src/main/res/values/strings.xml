@@ -9,4 +9,5 @@
     <string name="nearSites">Sites Near You</string>
     <string name="gif">Location gif</string>
     <string name="sign">Powered by Queue-ties</string>
+    <string name="site">Site</string>
 </resources>

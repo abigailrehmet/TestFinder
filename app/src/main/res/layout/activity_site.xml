@@ -7,12 +7,17 @@
         android:id="@+id/loc_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:background="@color/colorPrimary"
+        android:fontFamily="monospace"
+
+        android:gravity="center"
+        android:text="@string/site"
         android:textSize="36sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
     </androidx.recyclerview.widget.RecyclerView>
 

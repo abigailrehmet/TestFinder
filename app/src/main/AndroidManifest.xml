@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ZipCodeActivity"
-            android:label="Home">
+            android:label="Home"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
