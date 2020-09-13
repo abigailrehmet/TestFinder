@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -39,6 +40,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import android.widget.Toast;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -70,6 +72,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //request permission
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
+
+
+
+
     }
 
 
@@ -175,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
         /*
         LatLng sydney = new LatLng(-34, 151);
@@ -189,7 +195,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         // Retrieve the data from the marker.
+
         String markID = marker.getId();
+        String url = "https://maps.googleapis.com/maps/api/place/details/json?" + //Url
+                "place_id=" + markID + //marker id
+                "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
+
+        //Execute place task method and download json data
+        new PlaceTask().execute(url);
+
+
+        /*
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.saved_high_score_key), "name");
+        editor.commit();
+        //need key and place id to get data
+
+         */
+
+
         return false;
     }
 
@@ -293,7 +318,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //Add marker on map
                 mMap.addMarker(options);
 
+                String site = hashMapList.get("website");
+                System.out.println("Website:" + site);
+
             }
         }
+
+
     }
 }
