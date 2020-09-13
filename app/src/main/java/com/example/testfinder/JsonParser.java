@@ -9,22 +9,35 @@ import java.util.HashMap;
 import java.util.List;
 
 public class JsonParser {
+
+    private boolean clickedMark = false;
+
     private HashMap<String,String> parseJsonObject(JSONObject object) {
         //Init hash map
         HashMap<String,String> dataList = new HashMap<>();
         try {
-            //Get name from object
-            String name = object.getString("name");
-            //Get latitude from object
-            String latitude = object.getJSONObject("geometry")
-                    .getJSONObject("location").getString("lat");
-            //Get longitude from object
-            String longitude = object.getJSONObject("geometry")
-                    .getJSONObject("location").getString("lng");
-            //Put all value in hash map
-            dataList.put("name",name);
-            dataList.put("lat",latitude);
-            dataList.put("lng",longitude);
+            if (!clickedMark) {
+                //Get name from object
+                String name = object.getString("name");
+                //Get latitude from object
+                String latitude = object.getJSONObject("geometry")
+                        .getJSONObject("location").getString("lat");
+                //Get longitude from object
+                String longitude = object.getJSONObject("geometry")
+                        .getJSONObject("location").getString("lng");
+                String placeid = object.getString("place_id");
+                //Put all value in hash map
+                dataList.put("name", name);
+                dataList.put("lat", latitude);
+                dataList.put("lng", longitude);
+                dataList.put("placeid", placeid);
+            }
+            else {
+                //get website
+                String web = object.getString("website");
+                dataList.put("website", web);
+                dataList.put("yo", "yoyo");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -49,16 +62,23 @@ public class JsonParser {
         return dataList;
     }
 
-    public List<HashMap<String,String>> parseResult(JSONObject object) {
+    public List<HashMap<String,String>> parseResult(JSONObject object) throws JSONException {
         //Initialize json array
         JSONArray jsonArray = null;
         //Get result array
         try {
             jsonArray = object.getJSONArray("results");
         }catch (JSONException e ) {
-            e.printStackTrace();
+            clickedMark = true;
+            List<HashMap<String, String>> hss = new ArrayList<>();
+            hss.add(parseJsonObject(object.getJSONObject("result")));
+            return hss;
+            //e.printStackTrace();
         }
         //Return array
         return parseJsonArray(jsonArray);
     }
 }
+
+
+///I HAVE WENT TO THE BATHROOM REAL QUICK BRB!!

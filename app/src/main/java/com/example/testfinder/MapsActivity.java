@@ -48,12 +48,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient client;
     SupportMapFragment supportMapFragment;
     private String zip;
+    private HashMap<String, String> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         zip = getIntent().getStringExtra("ZIP");
+        ids = new HashMap<>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -198,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String markID = marker.getId();
         String url = "https://maps.googleapis.com/maps/api/place/details/json?" + //Url
-                "place_id=" + markID + //marker id
+                "place_id=" + ids.get(markID) + //marker id
                 "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
 
         //Execute place task method and download json data
@@ -301,25 +303,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             for (int i = 0; i < hashMaps.size(); i++) {
                 //Initialize hsh map
                 HashMap<String,String> hashMapList = hashMaps.get(i);
-                //Get latitude
-                double lat = Double.parseDouble(hashMapList.get("lat"));
-                //Get longitude
-                double lng = Double.parseDouble(hashMapList.get("lng"));
-                //Get name
-                String name = hashMapList.get("name");
-                //Concat latitude and longitude
-                LatLng latLng = new LatLng(lat, lng);
-                //Init marker options
-                MarkerOptions options = new MarkerOptions();
-                //Set position
-                options.position(latLng);
-                //Set title
-                options.title(name);
-                //Add marker on map
-                mMap.addMarker(options);
 
-                String site = hashMapList.get("website");
-                System.out.println("Website:" + site);
+                if (hashMapList.containsKey("yo")) {
+                    System.out.println("Website:" + hashMapList.get("website"));
+                  }
+                else {
+                    //Get latitude
+                    double lat = Double.parseDouble(hashMapList.get("lat"));
+                    //Get longitude
+                    double lng = Double.parseDouble(hashMapList.get("lng"));
+                    //Get name
+                    String name = hashMapList.get("name");
+                    //Concat latitude and longitude
+                    LatLng latLng = new LatLng(lat, lng);
+                    //Init marker options
+                    MarkerOptions options = new MarkerOptions();
+                    //Set position
+                    options.position(latLng);
+                    //Set title
+                    options.title(name);
+                    //Add marker on map
+                    ids.put(mMap.addMarker(options).getId(), hashMapList.get("placeid"));
+
+                }
+                //String site = hashMapList.get("url");
+                //System.out.println("Website:" + site);
 
             }
         }
