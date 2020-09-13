@@ -21,10 +21,12 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:gravity="center"
+        android:layout_marginTop="10sp"
         android:text="@string/nearSites"
         android:textColor="#FFFFFF"
-        android:textSize="20pt"
+        android:textSize="16pt"
         android:textStyle="bold" />
 
 </LinearLayout>
