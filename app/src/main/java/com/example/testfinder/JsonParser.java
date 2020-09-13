@@ -30,11 +30,13 @@ public class JsonParser {
                 String longitude = object.getJSONObject("geometry")
                         .getJSONObject("location").getString("lng");
                 String placeid = object.getString("place_id");
+                String rating = object.getString("rating");
                 //Put all value in hash map
                 dataList.put("name", name);
                 dataList.put("lat", latitude);
                 dataList.put("lng", longitude);
                 dataList.put("placeid", placeid);
+                dataList.put("rating", rating);
             }
             else {
                 String name = object.getString("name");

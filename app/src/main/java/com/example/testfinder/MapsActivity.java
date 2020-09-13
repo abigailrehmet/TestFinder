@@ -6,17 +6,22 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +32,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -48,6 +55,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import android.widget.Toast;
+
+import static java.sql.DriverManager.println;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -77,14 +86,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //when the permission is granted call method
             getCurrentLocation();
-        }
-        else {
+        } else {
             //when permission is not granted (denied)
             //request permission
             ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-
-
 
 
     }
@@ -103,11 +109,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             //mMap = googleMap;
-                            if(zip.equals("None")) {
+                            if (zip.equals("None")) {
                                 //initialize lat lng
                                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 //create marker options
-                                MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
+                                MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                                 //Zoom map
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                                 //add marker on map
@@ -143,16 +149,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String sString = zip;
         Geocoder geocoder = new Geocoder(MapsActivity.this);
         List<Address> list = new ArrayList<>();
-        try{
+        try {
             list = geocoder.getFromLocationName(sString, 1);
-        }catch (IOException e) {
+        } catch (IOException e) {
 
         }
 
-        if(list.size() > 0) {
-                MarkerOptions options = new MarkerOptions().position(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
-                googleMap.addMarker(options);
+        if (list.size() > 0) {
+            MarkerOptions options = new MarkerOptions().position(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude())).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
+            googleMap.addMarker(options);
 
             //Initialize url
             String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
@@ -207,14 +213,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMarkerClick(Marker marker) {
         // Retrieve the data from the marker.
 
-        String markID = marker.getId();
-        String url = "https://maps.googleapis.com/maps/api/place/details/json?" + //Url
-                "place_id=" + ids.get(markID) + //marker id
-                "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
+        //if(marker.getId() != ) {
+            String markID = marker.getId();
+            String url = "https://maps.googleapis.com/maps/api/place/details/json?" + //Url
+                    "place_id=" + ids.get(markID) + //marker id
+                    "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
 
-        //Execute place task method and download json data
-        new PlaceTask().execute(url);
-
+            //Execute place task method and download json data
+            new PlaceTask().execute(url);
+        //}
 
         /*
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
@@ -229,11 +236,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return false;
     }
 
-    private class PlaceTask extends AsyncTask<String,Integer,String> {
+    private class PlaceTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... strings) {
-           String data = null;
+            String data = null;
             try {
                 //Initialize data
                 data = downloadUrl(strings[0]);
@@ -282,14 +289,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private class ParserTask extends AsyncTask<String,Integer,List<HashMap<String,String>>>{
+    private class ParserTask extends AsyncTask<String, Integer, List<HashMap<String, String>>> {
 
         @Override
         protected List<HashMap<String, String>> doInBackground(String... strings) {
             //Create json parser class
             JsonParser jsonParser = new JsonParser();
             //Initialize hash map list
-            List<HashMap<String,String>> mapList = null;
+            List<HashMap<String, String>> mapList = null;
             JSONObject object = null;
             try {
                 //Init json object
@@ -309,9 +316,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Clear map
             //----------mMap.clear();------------
             //Use for loop
+            if (!(hashMaps == null)) {
             for (int i = 0; i < hashMaps.size(); i++) {
                 //Initialize hsh map
-                final HashMap<String,String> hashMapList = hashMaps.get(i);
+                final HashMap<String, String> hashMapList = hashMaps.get(i);
+
+
+                findViewById(R.id.hide).setVisibility(View.VISIBLE);
 
                 if (hashMapList.containsKey("yo")) {
                     TextView name = findViewById(R.id.name);
@@ -325,8 +336,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     TextView open = findViewById(R.id.open);
                     if (hashMapList.get("open").equals("true")) {
                         open.setText("Open now");
-                    }
-                    else {
+                    } else {
                         open.setText("Closed right now");
                     }
                     open.setVisibility(View.VISIBLE);
@@ -361,7 +371,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     TextView website = findViewById(R.id.website);
                     website.setVisibility(View.VISIBLE);
-                    website.setText(hashMapList.get("website"));
+                    website.setText("Visit Website");
+                    SpannableString content = new SpannableString("Content");
+                    content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                    website.setText(content);
+                    website.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(hashMapList.get("website")));
+                            startActivity(browserIntent);
+                        }
+                    });
                     website.setMovementMethod(LinkMovementMethod.getInstance());
 
                     Button more = findViewById(R.id.more);
@@ -372,32 +392,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             startActivity(intent);
                         }
                     });
-                  }
-                else {
-                    //Get latitude
-                    double lat = Double.parseDouble(hashMapList.get("lat"));
-                    //Get longitude
-                    double lng = Double.parseDouble(hashMapList.get("lng"));
-                    //Get name
-                    String name = hashMapList.get("name");
-                    //Concat latitude and longitude
-                    LatLng latLng = new LatLng(lat, lng);
-                    //Init marker options
-                    MarkerOptions options = new MarkerOptions();
-                    //Set position
-                    options.position(latLng);
-                    //Set title
-                    options.title(name);
-                    //Add marker on map
-                    ids.put(mMap.addMarker(options).getId(), hashMapList.get("placeid"));
+                } else {
 
+                    if (!(hashMapList.isEmpty())) {
+                        //Get latitude
+                        double lat = Double.parseDouble(hashMapList.get("lat"));
+                        //Get longitude
+                        double lng = Double.parseDouble(hashMapList.get("lng"));
+
+                        double rating = Double.parseDouble(hashMapList.get("rating"));
+                        //Get name
+                        String name = hashMapList.get("name");
+                        //Concat latitude and longitude
+                        LatLng latLng = new LatLng(lat, lng);
+                        //Init marker options
+                        MarkerOptions options = new MarkerOptions();
+                        //Set position
+                        options.position(latLng);
+                        //Set title
+                        options.title(name);
+                        //Add marker on map
+                        if (rating > 4) {
+                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                        } else if (rating > 2.5) {
+                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                        } else {
+                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        }
+                        ids.put(mMap.addMarker(options).getId(), hashMapList.get("placeid"));
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Site has no data", Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.hide).setVisibility(View.INVISIBLE);
+
+                    }
                 }
-                //String site = hashMapList.get("url");
-                //System.out.println("Website:" + site);
-
             }
+            }else {
+                Toast.makeText(getApplicationContext(), "Site has no data",Toast.LENGTH_SHORT).show();
+                findViewById(R.id.hide).setVisibility(View.INVISIBLE);
+            }
+
+
         }
-
-
     }
 }
