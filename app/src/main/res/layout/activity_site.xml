@@ -11,7 +11,7 @@
         android:fontFamily="monospace"
 
         android:gravity="center"
-        android:text="TextView"
+        android:text="@string/site"
         android:textSize="36sp" />
 
     <androidx.recyclerview.widget.RecyclerView
