@@ -55,8 +55,8 @@ public class SiteActivity extends AppCompatActivity {
             }
         });
 
-        //mFirebaseDatabase = FirebaseDatabase.getInstance();
-        //mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("reviews"); //Get by place_id
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("reviews"); //Get by place_id
 
             mChildEventListener = new ChildEventListener() {
                 @Override
@@ -100,6 +100,7 @@ public class SiteActivity extends AppCompatActivity {
 
                 }
             };
+            mOrdersDatabaseReference.addChildEventListener(mChildEventListener);
         }
 
     public void buildRecyclerView() {
