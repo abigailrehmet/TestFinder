@@ -41,6 +41,8 @@
         <activity android:name=".MapsActivity"
             android:parentActivityName=".ZipCodeActivity"
             />
+        <activity android:name=".SiteActivity"
+            android:parentActivityName=".MapsActivity" />
     </application>
 
 </manifest>

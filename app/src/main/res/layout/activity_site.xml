@@ -3,36 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:backgroundTint="#EBE5E5">
 
     <TextView
-        android:id="@+id/loc_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:text="@string/site"
-        android:textColor="@color/colorAccent"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10sp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="319dp"
-        android:layout_marginTop="10sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:background="@color/colorPrimary" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#c0c0c0" />
-
-    <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/reviews_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -44,15 +19,34 @@
         android:textStyle="bold"
         android:layout_marginTop="5sp"/>
 
-    <EditText
-        android:id="@+id/review_field"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="314dp"
-        android:background="@color/colorPrimary"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:textSize="18sp" />
+        android:layout_height="604dp"
+        android:background="@android:drawable/screen_background_light_transparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/msg_input"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_marginRight="85sp"
+            android:background="@color/cardview_light_background"
+            android:backgroundTint="#fff"
+            android:ems="10"
+            android:hint="message"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/send_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0sp"
+            android:background="@android:drawable/ic_menu_send" />
+    </LinearLayout>
 
 
 </LinearLayout>
