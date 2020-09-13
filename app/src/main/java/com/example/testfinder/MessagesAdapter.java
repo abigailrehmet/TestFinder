@@ -18,11 +18,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
         public MessagesHolder(View itemView) {
             super(itemView);
-            mTextView = itemView.findViewById(R.id.r);
+            mTextView = itemView.findViewById(R.id.review);
         }
     }
 
-    public MessagesAdapter(ArrayList<Messages> mMessagesList) {this.mMessagesList = mMessagesList;}
+    public MessagesAdapter(ArrayList<Messages> mMessagesList, SiteActivity siteActivity) {this.mMessagesList = mMessagesList;}
     @NonNull
     @Override
     public MessagesAdapter.MessagesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

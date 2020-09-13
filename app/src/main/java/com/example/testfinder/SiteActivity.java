@@ -3,6 +3,8 @@ package com.example.testfinder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Message;
@@ -30,11 +32,17 @@ public class SiteActivity extends AppCompatActivity {
     private TextView message;
     private DataSnapshot datasnap;
 
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private ArrayList<Messages> messageList;
+    private MessagesAdapter messagesAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_site);
         place_id = getIntent().getStringExtra("place_id");
+        messageList = new ArrayList<>();
         message = findViewById(R.id.msg_input);
         btn = findViewById(R.id.send_btn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -47,50 +55,62 @@ public class SiteActivity extends AppCompatActivity {
             }
         });
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("reviews"); //Get by place_id
+        //mFirebaseDatabase = FirebaseDatabase.getInstance();
+        //mOrdersDatabaseReference = mFirebaseDatabase.getReference().child("reviews"); //Get by place_id
 
-        mChildEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                ListView listView = findViewById(R.id.r);
-                ArrayList<Messages> mes = new ArrayList<>();
-                if (dataSnapshot.getKey().equals(place_id)) {
-                    GenericTypeIndicator<ArrayList<Messages>> map = new GenericTypeIndicator<ArrayList<Messages>>() {
-                    };
-                    mes = dataSnapshot.child("message").getValue(map);
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    ListView listView = findViewById(R.id.r);
+                    ArrayList<Messages> mes = new ArrayList<>();
+                    if (dataSnapshot.getKey().equals(place_id)) {
+                        GenericTypeIndicator<ArrayList<Messages>> map = new GenericTypeIndicator<ArrayList<Messages>>() {
+                        };
+                        mes = dataSnapshot.child("message").getValue(map);
 
-                    ArrayList<String> arrayList = new ArrayList<>();
+                        ArrayList<String> arrayList = new ArrayList<>();
 
-                    for (Messages m : mes) {
-                        arrayList.add(m.getMessage());
+                        for (Messages m : mes) {
+                            arrayList.add(m.getMessage());
+                        }
+
+                        listView.requestLayout();
+                        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, arrayList);
+                        listView.setAdapter(arrayAdapter);
                     }
-
-                    listView.requestLayout();
-                    ArrayAdapter arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.support_simple_spinner_dropdown_item, arrayList);
-                    listView.setAdapter(arrayAdapter);
                 }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
+        }
+
+    public void buildRecyclerView() {
+        mRecyclerView = findViewById(R.id.r);
+
+        //mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        messagesAdapter = new MessagesAdapter(messageList, this);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(messagesAdapter);
+
     }
 }
