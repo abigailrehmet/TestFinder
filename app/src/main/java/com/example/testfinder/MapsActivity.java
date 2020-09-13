@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient client;
@@ -186,6 +186,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        // Retrieve the data from the marker.
+        String markID = marker.getId();
+        return false;
+    }
+
     private class PlaceTask extends AsyncTask<String,Integer,String> {
 
         @Override
@@ -259,6 +266,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Return map list
             return mapList;
         }
+
 
         @Override
         protected void onPostExecute(List<HashMap<String, String>> hashMaps) {
