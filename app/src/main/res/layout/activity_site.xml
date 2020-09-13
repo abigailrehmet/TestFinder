@@ -1,50 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SiteActivity">
+
     <TextView
         android:id="@+id/reviews_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
         android:background="@color/colorPrimary"
         android:fontFamily="monospace"
         android:gravity="center"
         android:text="@string/reviews"
         android:textColor="@color/colorAccent"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="5sp"/>
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/r"
         android:layout_width="match_parent"
         android:layout_height="604dp"
-        android:background="@android:drawable/screen_background_light_transparent" />
+        android:background="@android:drawable/screen_background_light_transparent">
 
-    <LinearLayout
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <EditText
+        android:id="@+id/msg_input"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="49dp"
+        android:background="@color/colorPrimaryDark"
+        android:backgroundTint="#fff"
+        android:ems="10"
+        android:hint="message"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/send_btn" />
 
-        <EditText
-            android:id="@+id/msg_input"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:layout_marginRight="85sp"
-            android:background="@color/cardview_light_background"
-            android:backgroundTint="#fff"
-            android:ems="10"
-            android:hint="message"
-            android:inputType="textPersonName" />
+    <Button
+        android:id="@+id/send_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/ic_menu_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/send_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0sp"
-            android:background="@android:drawable/ic_menu_send" />
-    </LinearLayout>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

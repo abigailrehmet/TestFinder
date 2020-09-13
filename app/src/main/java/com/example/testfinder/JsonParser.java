@@ -39,6 +39,7 @@ public class JsonParser {
                 dataList.put("rating", rating);
             }
             else {
+                String place_id = object.getString("place_id");
                 String name = object.getString("name");
                 String web = object.getString("website");
                 String rating = object.getString("rating");
@@ -62,6 +63,7 @@ public class JsonParser {
                 dataList.put("friday", friday);
                 dataList.put("saturday", saturday);
                 dataList.put("sunday", sunday);
+                dataList.put("place_id", place_id);
 
             }
         } catch (JSONException e) {
