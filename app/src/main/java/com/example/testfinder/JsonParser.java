@@ -15,6 +15,7 @@ public class JsonParser {
 
     private boolean clickedMark = false;
 
+
     private HashMap<String,String> parseJsonObject(JSONObject object) {
         //Init hash map
         HashMap<String,String> dataList = new HashMap<>();
@@ -36,8 +37,6 @@ public class JsonParser {
                 dataList.put("placeid", placeid);
             }
             else {
-                //get website
-                JSONArray reviews = object.getJSONArray("reviews");
                 String name = object.getString("name");
                 String web = object.getString("website");
                 String rating = object.getString("rating");
@@ -62,10 +61,6 @@ public class JsonParser {
                 dataList.put("saturday", saturday);
                 dataList.put("sunday", sunday);
 
-                //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                //SharedPreferences.Editor editor = sharedPref.edit();
-                //editor.putInt(JSONObject "name");
-                //editor.commit();
             }
         } catch (JSONException e) {
             e.printStackTrace();
