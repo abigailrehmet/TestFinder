@@ -72,5 +72,17 @@
         android:layout_marginRight="55sp"
         android:layout_marginLeft="55sp"/>
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign"
+        android:layout_marginLeft="40sp"
+        android:layout_marginRight="40sp"
+        android:layout_marginTop="250sp"
+        android:gravity="center"
+        android:textStyle="italic"
+        />
+
 
 </LinearLayout>
