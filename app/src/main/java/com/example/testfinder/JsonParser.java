@@ -34,9 +34,29 @@ public class JsonParser {
             }
             else {
                 //get website
+                String name = object.getString("name");
                 String web = object.getString("website");
+                String rating = object.getString("rating");
+                String open = object.getJSONObject("opening_hours").getString("open_now");
+                String monday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(0).toString();
+                String tuesday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(1).toString();
+                String wednesday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(2).toString();
+                String thursday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(3).toString();
+                String friday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(4).toString();
+                String saturday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(5).toString();
+                String sunday = object.getJSONObject("opening_hours").getJSONArray("weekday_text").get(6).toString();
+                dataList.put("name", name);
                 dataList.put("website", web);
                 dataList.put("yo", "yoyo");
+                dataList.put("rating", rating);
+                dataList.put("open", open);
+                dataList.put("monday", monday);
+                dataList.put("tuesday", tuesday);
+                dataList.put("wednesday", wednesday);
+                dataList.put("thursday", thursday);
+                dataList.put("friday", friday);
+                dataList.put("saturday", saturday);
+                dataList.put("sunday", sunday);
             }
         } catch (JSONException e) {
             e.printStackTrace();
