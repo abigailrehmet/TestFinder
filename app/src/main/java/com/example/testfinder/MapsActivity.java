@@ -6,12 +6,17 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -30,6 +35,7 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,11 +55,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SupportMapFragment supportMapFragment;
     private String zip;
     private HashMap<String, String> ids;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        intent = new Intent(this, SiteActivity.class);
         zip = getIntent().getStringExtra("ZIP");
         ids = new HashMap<>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -302,10 +310,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Use for loop
             for (int i = 0; i < hashMaps.size(); i++) {
                 //Initialize hsh map
-                HashMap<String,String> hashMapList = hashMaps.get(i);
+                final HashMap<String,String> hashMapList = hashMaps.get(i);
 
                 if (hashMapList.containsKey("yo")) {
-                    System.out.println("Website:" + hashMapList.get("website"));
+                    TextView name = findViewById(R.id.name);
+                    name.setText(hashMapList.get("name"));
+                    name.setVisibility(View.VISIBLE);
+
+                    TextView rating = findViewById(R.id.rating);
+                    rating.setText("Rating: " + hashMapList.get("rating") + " out of 5");
+                    rating.setVisibility(View.VISIBLE);
+
+                    TextView open = findViewById(R.id.open);
+                    if (hashMapList.get("open").equals("true")) {
+                        open.setText("Open now");
+                    }
+                    else {
+                        open.setText("Closed right now");
+                    }
+                    open.setVisibility(View.VISIBLE);
+
+                    TextView monday = findViewById(R.id.monday);
+                    monday.setVisibility(View.VISIBLE);
+                    monday.setText(hashMapList.get("monday"));
+
+                    TextView tuesday = findViewById(R.id.tuesday);
+                    tuesday.setVisibility(View.VISIBLE);
+                    tuesday.setText(hashMapList.get("tuesday"));
+
+                    TextView wednesday = findViewById(R.id.wednesday);
+                    wednesday.setVisibility(View.VISIBLE);
+                    wednesday.setText(hashMapList.get("wednesday"));
+
+                    TextView thursday = findViewById(R.id.thursday);
+                    thursday.setVisibility(View.VISIBLE);
+                    thursday.setText(hashMapList.get("thursday"));
+
+                    TextView friday = findViewById(R.id.friday);
+                    friday.setVisibility(View.VISIBLE);
+                    friday.setText(hashMapList.get("friday"));
+
+                    TextView saturday = findViewById(R.id.saturday);
+                    saturday.setVisibility(View.VISIBLE);
+                    saturday.setText(hashMapList.get("saturday"));
+
+                    TextView sunday = findViewById(R.id.sunday);
+                    sunday.setVisibility(View.VISIBLE);
+                    sunday.setText(hashMapList.get("sunday"));
+
+                    TextView website = findViewById(R.id.website);
+                    website.setVisibility(View.VISIBLE);
+                    website.setText(hashMapList.get("website"));
+                    website.setMovementMethod(LinkMovementMethod.getInstance());
+
+                    Button more = findViewById(R.id.more);
+                    more.setVisibility(View.VISIBLE);
+                    more.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(intent);
+                        }
+                    });
                   }
                 else {
                     //Get latitude

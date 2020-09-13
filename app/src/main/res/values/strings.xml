@@ -6,7 +6,7 @@
     <string name="Search">Search</string>
     <string name="useCurrLocationBtn">use your current location</string>
     <string name="currLocationTxt">or click to</string>
-    <string name="nearSites">Sites Near You</string>
+    <string name="nearSites">Click site to see more</string>
     <string name="gif">Location gif</string>
     <string name="sign">Powered by Queue-ties</string>
     <string name="site">Site</string>

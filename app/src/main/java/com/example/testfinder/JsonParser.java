@@ -1,5 +1,8 @@
 package com.example.testfinder;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +37,7 @@ public class JsonParser {
             }
             else {
                 //get website
+                JSONArray reviews = object.getJSONArray("reviews");
                 String name = object.getString("name");
                 String web = object.getString("website");
                 String rating = object.getString("rating");
@@ -57,6 +61,11 @@ public class JsonParser {
                 dataList.put("friday", friday);
                 dataList.put("saturday", saturday);
                 dataList.put("sunday", sunday);
+
+                //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putInt(JSONObject "name");
+                //editor.commit();
             }
         } catch (JSONException e) {
             e.printStackTrace();
