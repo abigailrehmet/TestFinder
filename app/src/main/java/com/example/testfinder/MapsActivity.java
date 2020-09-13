@@ -371,8 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     TextView website = findViewById(R.id.website);
                     website.setVisibility(View.VISIBLE);
-                    website.setText("Visit Website");
-                    SpannableString content = new SpannableString("Content");
+                    SpannableString content = new SpannableString("Visit Website");
                     content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
                     website.setText(content);
                     website.setOnClickListener(new View.OnClickListener() {
