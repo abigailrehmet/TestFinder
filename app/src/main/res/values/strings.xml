@@ -11,4 +11,5 @@
     <string name="sign">Powered by Queue-ties</string>
     <string name="site">Site</string>
     <string name="reviews">Reviews</string>
+    <string name="map_instructions">Enter a weather event and date range to see nearby events of the specified type on a map. You may type in a zip code or use your current location. Events will be shown within 20 miles of your selected location.</string>
 </resources>
