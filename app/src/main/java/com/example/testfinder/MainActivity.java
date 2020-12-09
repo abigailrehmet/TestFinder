@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
+    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/get_events.php";
     private ArrayList<Event> events;
 
     private Button get;
@@ -99,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
                                 int event_id = object.getInt("Event_id");
                                 int episode_id = object.getInt("Episode_id");
                                 String event_type = object.getString("Event_type");
-                                Event e = new Event(date, event_id, episode_id, event_type, 0 ,0);
+                                String county = object.getString("County");
+                                String state = object.getString("State");
+                                Event e = new Event(county, state, date, event_id, episode_id, event_type, 0 ,0);
                                 events.add(e);
                             }
                         } catch (Exception e) {
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         event.setText("");
                         for (int i = 0; i < events.size(); i++) {
-                            event.append("Event " + i + ": " + events.get(i).getDate() + " " + events.get(i).getEvent_id() + " " + events.get(i).getEpisode_id() + " " + events.get(i).getEvent_type() + "\n");
+                            event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "\n");
                         }
 
                     }
