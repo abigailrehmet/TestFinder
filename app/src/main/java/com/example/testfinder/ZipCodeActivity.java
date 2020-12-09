@@ -2,9 +2,9 @@ package com.example.testfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.Marker;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,10 +26,18 @@ public class ZipCodeActivity extends AppCompatActivity {
     Button mButton2;
     EditText mEdit;
 
+    private TextInputEditText weather;
+    private EditText from;
+    private EditText to;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_zip_code);
+
+        weather = findViewById(R.id.weather2);
+        from = findViewById(R.id.weather2);
+        to = findViewById(R.id.to2);
 
         mButton = findViewById(R.id.button);
         mButton2 = findViewById(R.id.button2);
@@ -52,6 +60,9 @@ public class ZipCodeActivity extends AppCompatActivity {
                         }
                         if(list.size() > 0) {
                             intent.putExtra("ZIP", mEdit.getText().toString());
+                            intent.putExtra("weather", weather.getText().toString().trim());
+                            intent.putExtra("from", from.getText().toString().trim());
+                            intent.putExtra("to", to.getText().toString().trim());
                             startActivity(intent);
                         } else {
                             Toast.makeText(view.getContext(), "Invalid Zip Code!",Toast.LENGTH_SHORT).show();
@@ -65,6 +76,9 @@ public class ZipCodeActivity extends AppCompatActivity {
                     public void onClick(View v)
                     {
                         intent.putExtra("ZIP", "None");
+                        intent.putExtra("weather", weather.getText().toString().trim());
+                        intent.putExtra("from", from.getText().toString().trim());
+                        intent.putExtra("to", to.getText().toString().trim());
                         startActivity(intent);
                     }
                 });

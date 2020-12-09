@@ -21,11 +21,18 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,6 +47,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,9 +60,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import android.widget.Toast;
 
 import static java.sql.DriverManager.println;
@@ -65,13 +78,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient client;
     SupportMapFragment supportMapFragment;
     private String zip;
+    private String state;
+    private String from;
+    private String to;
     private HashMap<String, String> ids;
+
+    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events_map.php";
+    private ArrayList<Event> events;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        events = new ArrayList<>();
+
         zip = getIntent().getStringExtra("ZIP");
+        state = getIntent().getStringExtra("state");
+        from = getIntent().getStringExtra("from");
+        to = getIntent().getStringExtra("to");
+
         ids = new HashMap<>();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -442,6 +469,79 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
 
+        }
+    }
+
+    private void getTestEvents() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, BASE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                DateFormat df2 = new SimpleDateFormat("MM/dd/yyyy");
+                                Date d = df.parse(object.getString("Date"));
+                                String date = df2.format(d);
+
+                                int event_id = object.getInt("Event_id");
+                                int episode_id = object.getInt("Episode_id");
+                                String event_type = object.getString("Event_type");
+                                Event e = new Event(date, event_id, episode_id, event_type);
+                                events.add(e);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                        /*event.setText("");
+                        for (int i = 0; i < events.size(); i++) {
+                            event.append("Event " + i + ": " + events.get(i).getDate() + " " + events.get(i).getEvent_id() + " " + events.get(i).getEpisode_id() + " " + events.get(i).getEvent_type() + "\n");
+                        }*/
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MapsActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("event_type", state);
+                params.put("from", from);
+                params.put("to", to);
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+    private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            if (unit.equals("K")) {
+                dist = dist * 1.609344;
+            } else if (unit.equals("N")) {
+                dist = dist * 0.8684;
+            }
+            return (dist);
         }
     }
 }

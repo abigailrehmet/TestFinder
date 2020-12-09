@@ -2,6 +2,7 @@ package com.example.testfinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Event> events;
 
     private Button get;
+    private Button mmode;
     private TextView event;
+
+    Intent intent;
 
     private TextInputEditText state;
     private TextInputEditText county;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        intent = new Intent(this, ZipCodeActivity.class);
 
         state = findViewById(R.id.state);
         county = findViewById(R.id.county);
@@ -53,8 +58,15 @@ public class MainActivity extends AppCompatActivity {
         to = findViewById(R.id.to);
 
         get = findViewById(R.id.get);
+        mmode = findViewById(R.id.mmode);
         event = findViewById(R.id.event);
 
+        mmode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
         get.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                                 int event_id = object.getInt("Event_id");
                                 int episode_id = object.getInt("Episode_id");
                                 String event_type = object.getString("Event_type");
-                                Event e = new Event(date, event_id, episode_id, event_type);
+                                Event e = new Event(date, event_id, episode_id, event_type, 0 ,0);
                                 events.add(e);
                             }
                         } catch (Exception e) {
