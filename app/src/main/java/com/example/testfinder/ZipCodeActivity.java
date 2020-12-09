@@ -36,7 +36,7 @@ public class ZipCodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_zip_code);
 
         weather = findViewById(R.id.weather2);
-        from = findViewById(R.id.weather2);
+        from = findViewById(R.id.from2);
         to = findViewById(R.id.to2);
 
         mButton = findViewById(R.id.button);

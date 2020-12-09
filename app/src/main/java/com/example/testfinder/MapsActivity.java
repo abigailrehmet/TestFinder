@@ -78,10 +78,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient client;
     SupportMapFragment supportMapFragment;
     private String zip;
-    private String state;
+    private String weather;
     private String from;
     private String to;
+    private String state;
+    private String county;
+    private Double lat;
+    private Double lng;
     private HashMap<String, String> ids;
+    private LatLng latLng;
+    private HashMap<String, HashMap<String, String>> markerMap;
 
     private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events_map.php";
     private ArrayList<Event> events;
@@ -93,9 +99,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         events = new ArrayList<>();
-
+        markerMap = new HashMap<>();
         zip = getIntent().getStringExtra("ZIP");
-        state = getIntent().getStringExtra("state");
+        weather = getIntent().getStringExtra("weather");
         from = getIntent().getStringExtra("from");
         to = getIntent().getStringExtra("to");
 
@@ -137,17 +143,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //mMap = googleMap;
                             if (zip.equals("None")) {
                                 //initialize lat lng
-                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                latLng = new LatLng(location.getLatitude(), location.getLongitude());
                                 //create marker options
                                 MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                                 //Zoom map
                                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                 //add marker on map
                                 googleMap.addMarker(options);
-
-                                MarkerOptions options1 = new MarkerOptions().position(new LatLng(38.3491, -122.9616)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(38.3491, -122.9616), 10));
-                                googleMap.addMarker(options1);
 
                                 //Initialize url
                                 /*String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
@@ -159,6 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                 //Execute place task method and download json data
                                 new PlaceTask().execute(url);*/
+
+                                getTestEvents(googleMap);
                             } else {
                                 geoLocate(googleMap, zip);
                             }
@@ -187,12 +192,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (list.size() > 0) {
             MarkerOptions options = new MarkerOptions().position(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude())).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
+            latLng = new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), 10));
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
             googleMap.addMarker(options);
-
-            MarkerOptions options1 = new MarkerOptions().position(new LatLng(38.3491, -122.9616)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(38.3491, -122.9616), 10));
-            googleMap.addMarker(options1);
 
             //Initialize url
             /*String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
@@ -204,6 +207,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //Execute place task method and download json data
             new PlaceTask().execute(url);*/
+            getTestEvents(googleMap);
         }
     }
 
@@ -265,7 +269,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //need key and place id to get data
 
          */
+        String id = marker.getId();
+        if (markerMap.get(id) != null) {
+            findViewById(R.id.hide).setVisibility(View.VISIBLE);
 
+            TextView rating = findViewById(R.id.rating);
+            rating.setText("Event: " + (markerMap.get(id)).get("Event_type"));
+            rating.setVisibility(View.VISIBLE);
+
+            TextView name = findViewById(R.id.name);
+            name.setText(markerMap.get(id).get("County") + ", " + (markerMap.get(id)).get("State"));
+            name.setVisibility(View.VISIBLE);
+
+            TextView monday = findViewById(R.id.monday);
+            monday.setVisibility(View.VISIBLE);
+            monday.setText((markerMap.get(id)).get("Date"));
+        } else {
+            findViewById(R.id.hide).setVisibility(View.INVISIBLE);
+            Toast.makeText(getApplicationContext(), "Selected Location", Toast.LENGTH_SHORT).show();
+        }
 
         return false;
     }
@@ -350,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Clear map
             //----------mMap.clear();------------
             //Use for loop
-            if (!(hashMaps == null)) {
+            /*if (!(hashMaps == null)) {
             for (int i = 0; i < hashMaps.size(); i++) {
                 //Initialize hsh map
                 final HashMap<String, String> hashMapList = hashMaps.get(i);
@@ -466,13 +488,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }else {
                 Toast.makeText(getApplicationContext(), "Site has no data",Toast.LENGTH_SHORT).show();
                 findViewById(R.id.hide).setVisibility(View.INVISIBLE);
-            }
+            }*/
 
 
         }
     }
 
-    private void getTestEvents() {
+    private void getTestEvents(final GoogleMap googleMap) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -483,19 +505,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         try {
                             JSONArray array = new JSONArray(response);
                             System.out.println(array);
+                            double thislat = latLng.latitude;
+                            double thislng = latLng.longitude;
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject object = array.getJSONObject(i);
 
-                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                                DateFormat df2 = new SimpleDateFormat("MM/dd/yyyy");
-                                Date d = df.parse(object.getString("Date"));
-                                String date = df2.format(d);
+                                double lat = Double.parseDouble(object.getString("Latitude"));
+                                double lng = Double.parseDouble(object.getString("Longitude"));
 
-                                int event_id = object.getInt("Event_id");
-                                int episode_id = object.getInt("Episode_id");
-                                String event_type = object.getString("Event_type");
-                                Event e = new Event(date, event_id, episode_id, event_type);
-                                events.add(e);
+                                //If the distances are within 250 miles
+                                if(distance(thislat, thislng, lat, lng, "M") < 20) {
+                                    MarkerOptions options1 = new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                    DateFormat df2 = new SimpleDateFormat("MM/dd/yyyy");
+                                    Date d = df.parse(object.getString("Date"));
+                                    String date = df2.format(d);
+
+                                    int event_id = object.getInt("Event_id");
+                                    int episode_id = object.getInt("Episode_id");
+                                    String event_type = object.getString("Event_type");
+                                    String county = object.getString("County");
+                                    String state = object.getString("State");
+
+                                    options1.title(event_type);
+                                    Marker gm = googleMap.addMarker(options1);
+
+                                    System.out.println("THE ID:" + gm.getId());
+
+
+                                    markerMap.put(gm.getId(), new HashMap<String, String>());
+                                    markerMap.get(gm.getId()).put("Event_id", String.valueOf(event_id));
+                                    markerMap.get(gm.getId()).put("Episode_id", String.valueOf(episode_id));
+                                    markerMap.get(gm.getId()).put("Event_type", event_type);
+                                    markerMap.get(gm.getId()).put("County", county);
+                                    markerMap.get(gm.getId()).put("State", state);
+                                    markerMap.get(gm.getId()).put("Date", date);
+
+                                    Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng);
+                                    events.add(e);
+                                }
                             }
                         } catch (Exception e) {
 
@@ -516,7 +565,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("event_type", state);
+                params.put("event_type", weather);
                 params.put("from", from);
                 params.put("to", to);
                 return params;
