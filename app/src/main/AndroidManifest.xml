@@ -16,16 +16,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SiteActivity"></activity>
         <activity
-            android:name=".ZipCodeActivity"
-            android:label="Home"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".SiteActivity" />
+        <activity
+            android:name=".ZipCodeActivity"
+            android:label="Home"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
