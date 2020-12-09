@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/get_events.php";
+    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
     private ArrayList<Event> events;
 
     private Button get;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView event;
 
     Intent intent;
+
 
     private TextInputEditText state;
     private TextInputEditText county;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         intent = new Intent(this, ZipCodeActivity.class);
+
 
         state = findViewById(R.id.state);
         county = findViewById(R.id.county);
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONArray array = new JSONArray(response);
                             System.out.println(array);
+                            events.clear();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject object = array.getJSONObject(i);
 
@@ -101,16 +104,33 @@ public class MainActivity extends AppCompatActivity {
                                 String event_type = object.getString("Event_type");
                                 String county = object.getString("County");
                                 String state = object.getString("State");
-                                Event e = new Event(county, state, date, event_id, episode_id, event_type, 0 ,0);
+                                Double lat = Double.parseDouble(object.getString("Latitude"));
+                                Double lng = Double.parseDouble(object.getString("Longitude"));
+                                int mag = object.getInt("Magnitude");
+                                int year = object.getInt("Year");
+                                int direct_deaths = object.getInt("Direct_deaths");
+                                int indirect_deaths = object.getInt("Indirect_deaths");
+                                int dp_cost = object.getInt("DP_cost");
+                                int dc_cost = object.getInt("DC_cost");
+                                int indirect_injuries = object.getInt("Indirect_injuries");
+                                int direct_injuries = object.getInt("direct_injuries");
+                                String source = object.getString("Source");
+
+                                Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source);
                                 events.add(e);
                             }
                         } catch (Exception e) {
 
                         }
+
+                        //event.setVisibility(View.INVISIBLE);
                         event.setText("");
+
                         for (int i = 0; i < events.size(); i++) {
                             event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "\n");
                         }
+
+
 
                     }
                 }, new Response.ErrorListener() {

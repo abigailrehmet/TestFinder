@@ -541,8 +541,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     markerMap.get(gm.getId()).put("County", county);
                                     markerMap.get(gm.getId()).put("State", state);
                                     markerMap.get(gm.getId()).put("Date", date);
+                                    int mag = object.getInt("Magnitude");
+                                    int year = object.getInt("Year");
+                                    int direct_deaths = object.getInt("Direct_deaths");
+                                    int indirect_deaths = object.getInt("Indirect_deaths");
+                                    int dp_cost = object.getInt("DP_cost");
+                                    int dc_cost = object.getInt("DC_cost");
+                                    int indirect_injuries = object.getInt("Indirect_injuries");
+                                    int direct_injuries = object.getInt("direct_injuries");
+                                    String source = object.getString("Source");
 
-                                    Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng);
+                                    Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source);
                                     events.add(e);
                                 }
                             }
