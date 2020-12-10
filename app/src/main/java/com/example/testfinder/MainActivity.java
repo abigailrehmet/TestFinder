@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                                 int dp_cost = object.getInt("DP_cost");
                                 int dc_cost = object.getInt("DC_cost");
                                 int indirect_injuries = object.getInt("Indirect_injuries");
-                                int direct_injuries = object.getInt("direct_injuries");
+                                int direct_injuries = object.getInt("Direct_injuries");
                                 String source = object.getString("Source");
 
                                 Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source);
@@ -171,17 +171,17 @@ public class MainActivity extends AppCompatActivity {
                                 event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "\n");
                             }
                             else if (buttonResponse.equals("Direct death")) {
-                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getDirect_deaths() + "\n");
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + " " + events.get(i).getDirect_deaths() + "\n");
                             }
                             else if (buttonResponse.equals("Indirect death")) {
-                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getIndirect_deaths() + "\n");
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + " " + events.get(i).getIndirect_deaths() + "\n");
                             }
                             else if (buttonResponse.equals("Direct injury")) {
-                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getDirect_injuries() + "\n");
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + " " + events.get(i).getDirect_injuries() + "\n");
                             }
                             else {
                                 //indirect injury
-                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getIndirect_injuries() + "\n");
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + " " + events.get(i).getIndirect_injuries() + "\n");
                             }
                         }
 

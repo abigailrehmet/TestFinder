@@ -550,9 +550,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     int indirect_injuries = object.getInt("Indirect_injuries");
                                     int direct_injuries = object.getInt("direct_injuries");
                                     String source = object.getString("Source");
-                                    String d_i = object.getString("Death_or_inj");
 
-                                    Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source, d_i);
+                                    Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source);
                                     events.add(e);
                                 }
                             }
