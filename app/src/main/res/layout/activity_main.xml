@@ -11,180 +11,54 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/mainInstructions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Scroll up and down to see more options!"
-                android:gravity="center"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout5"
-                android:layout_width="409dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/state"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="State (ex. OH)" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout2"
-                android:layout_width="409dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/county"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="County (ex. Medina County)"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
-                android:layout_width="409dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/weather"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Weather type (ex. Flood)" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="From: "
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="mm/dd/yyyy"
-                    android:inputType="date" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="To: "
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="mm/dd/yyyy"
-                    android:inputType="date" />
-
-            </LinearLayout>
-
 
             <TextView
-                android:id="@+id/showText"
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="show (optional):"
-                android:textSize="18sp" />
-
-            <RadioGroup
-                android:id="@+id/buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <RadioButton
-                    android:id="@+id/direct_deaths"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="direct deaths" />
-
-                <RadioButton
-                    android:id="@+id/indirect_deaths"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="indirect deaths" />
-
-                <RadioButton
-                    android:id="@+id/direct_injuries"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="direct injuries" />
-
-                <RadioButton
-                    android:id="@+id/indirect_injuries"
-                    android:layout_width="246dp"
-                    android:layout_height="46dp"
-                    android:onClick="onRadioButtonClicked"
-                    android:text="indirect injuries" />
-
-            </RadioGroup>
+                android:fontFamily="casual"
+                android:text="WELCOME!"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:textSize="36sp" />
 
             <Button
-                android:id="@+id/get"
-                android:layout_width="wrap_content"
+                android:id="@+id/totable"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:background="@color/colorPrimaryDark"
+                android:fontFamily="casual"
+                android:gravity="center"
                 android:text="USE TABLE MODE"
-                android:gravity="center" />
-
-            <Button
-                android:id="@+id/demographicsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="SHOW DEMOGRAPHICS"
-                android:gravity="center" />
+                android:textColor="@color/cardview_light_background" />
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Or"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="OR"
+                android:textColor="@color/cardview_light_background" />
 
             <Button
-                android:id="@+id/mmode"
-                android:layout_width="wrap_content"
+                android:id="@+id/tomap"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="USE MAP MODE"
-                android:gravity="center" />
+                android:background="@color/colorPrimary"
+                android:fontFamily="casual"
+                android:gravity="center"
+                android:text="USE MAP MODE" />
 
             <TextView
                 android:id="@+id/event"

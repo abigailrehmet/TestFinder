@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     android:scrollbarSize="4dp">
 
@@ -18,10 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="casual"
             android:shadowColor="#000000"
             android:text="@string/map_instructions"
             android:textAlignment="center"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@android:color/holo_red_dark"
             android:textSize="18sp" />
 
         <pl.droidsonroids.gif.GifImageView
@@ -40,12 +41,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/cardview_dark_background">
+        android:textColorHint="@color/cardview_light_background">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/weather2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
             android:hint="Weather (ex. Flood)"
             android:textColor="@color/cardview_dark_background"
             android:textColorHint="@color/cardview_dark_background" />
@@ -55,21 +58,25 @@
         android:id="@+id/from2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
         android:ems="10"
         android:hint="mm/dd/yyyy"
         android:inputType="date"
-        android:textColor="@color/cardview_dark_background"
-        android:textColorHint="#5C5B5B" />
+        android:textColor="@color/cardview_light_background"
+        android:textColorHint="@color/cardview_light_background" />
 
     <EditText
         android:id="@+id/to2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
         android:ems="10"
         android:hint="mm/dd/yyyy"
         android:inputType="date"
         android:textColor="@color/cardview_dark_background"
-        android:textColorHint="#5C5B5B" />
+        android:textColorHint="@color/cardview_light_background" />
 
     <EditText
         android:id="@+id/edittext"
@@ -83,8 +90,8 @@
         android:gravity="center"
         android:hint="@string/ZipHint"
         android:inputType="text"
-        android:textColor="@color/colorAccent"
-        android:textColorHint="#5C5B5B" />
+        android:textColor="@color/cardview_light_background"
+        android:textColorHint="@color/cardview_light_background" />
 
     <Button
         android:id="@+id/button"
@@ -92,8 +99,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="55sp"
         android:layout_marginRight="55sp"
-        android:background="@color/colorPrimaryDark"
-        android:fontFamily="monospace"
+        android:background="@color/colorAccent"
+        android:fontFamily="casual"
         android:text="@string/Search"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
@@ -104,7 +111,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30sp"
-        android:fontFamily="monospace"
+        android:fontFamily="casual"
         android:gravity="center"
         android:text="@string/currLocationTxt"
         android:textColor="@color/colorAccent" />
@@ -116,10 +123,10 @@
         android:layout_marginLeft="55sp"
         android:layout_marginTop="5sp"
         android:layout_marginRight="55sp"
-        android:background="@color/colorPrimaryDark"
-        android:fontFamily="monospace"
+        android:background="@color/colorPrimary"
+        android:fontFamily="casual"
         android:text="@string/useCurrLocationBtn"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold" />
 
     <TextView
@@ -127,11 +134,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40sp"
-        android:layout_marginTop="80sp"
+        android:layout_marginTop="50sp"
         android:layout_marginRight="40sp"
+        android:fontFamily="casual"
         android:gravity="center"
         android:text="@string/sign"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/cardview_light_background"
         android:textStyle="italic" />
 
 
