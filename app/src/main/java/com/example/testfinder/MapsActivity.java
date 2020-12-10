@@ -273,17 +273,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (markerMap.get(id) != null) {
             findViewById(R.id.hide).setVisibility(View.VISIBLE);
 
-            TextView rating = findViewById(R.id.rating);
-            rating.setText("Event: " + (markerMap.get(id)).get("Event_type"));
-            rating.setVisibility(View.VISIBLE);
+            TextView weather = findViewById(R.id.rating);
+            weather.setText("Event: " + (markerMap.get(id)).get("Event_type"));
+            weather.setVisibility(View.VISIBLE);
 
-            TextView name = findViewById(R.id.name);
-            name.setText(markerMap.get(id).get("County") + ", " + (markerMap.get(id)).get("State"));
-            name.setVisibility(View.VISIBLE);
+            TextView place = findViewById(R.id.name);
+            place.setText(markerMap.get(id).get("County") + ", " + (markerMap.get(id)).get("State"));
+            place.setVisibility(View.VISIBLE);
 
-            TextView monday = findViewById(R.id.monday);
-            monday.setVisibility(View.VISIBLE);
-            monday.setText((markerMap.get(id)).get("Date"));
+            TextView date = findViewById(R.id.monday);
+            date.setVisibility(View.VISIBLE);
+            date.setText((markerMap.get(id)).get("Date"));
+
+            /////////////////////////////////////////
+
+            TextView eventID = findViewById(R.id.open);
+            eventID.setVisibility(View.VISIBLE);
+            eventID.setText(("Event ID: " + (markerMap.get(id)).get("Event id")));
+
+            TextView magnitude = findViewById(R.id.tuesday);
+            magnitude.setVisibility(View.VISIBLE);
+            magnitude.setText(("Magnitude: " + (markerMap.get(id)).get("Magnitude")));
+
+            TextView dir_deaths = findViewById(R.id.wednesday);
+            dir_deaths.setVisibility(View.VISIBLE);
+            dir_deaths.setText(("Direct Deaths: " + (markerMap.get(id)).get("Dir_death")));
+
+            TextView indir_deaths = findViewById(R.id.thursday);
+            indir_deaths.setVisibility(View.VISIBLE);
+            indir_deaths.setText(("Indirect Deaths: " + (markerMap.get(id)).get("Indir_death")));
+
+            TextView dir_inj = findViewById(R.id.friday);
+            dir_inj.setVisibility(View.VISIBLE);
+            dir_inj.setText(("Direct Injuries: " + (markerMap.get(id)).get("Dir_inj")));
+
+            TextView indir_inj = findViewById(R.id.saturday);
+            indir_inj.setVisibility(View.VISIBLE);
+            indir_inj.setText(("Indirect Injuries: " + (markerMap.get(id)).get("Indir_inj")));
+
+            TextView dp_cost = findViewById(R.id.sunday);
+            dp_cost.setVisibility(View.VISIBLE);
+            dp_cost.setText(("Damaged Property Costs: " + (markerMap.get(id)).get("DP_cost")));
+
+            TextView dc_cost = findViewById(R.id.website);
+            dc_cost.setVisibility(View.VISIBLE);
+            dc_cost.setText(("Crop Damage Costs: " + (markerMap.get(id)).get("DP_cost")));
+
         } else {
             findViewById(R.id.hide).setVisibility(View.INVISIBLE);
             Toast.makeText(getApplicationContext(), "Selected Location", Toast.LENGTH_SHORT).show();
@@ -542,14 +577,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     markerMap.get(gm.getId()).put("State", state);
                                     markerMap.get(gm.getId()).put("Date", date);
                                     int mag = object.getInt("Magnitude");
+                                    markerMap.get(gm.getId()).put("Magnitude", Integer.toString(mag));
                                     int year = object.getInt("Year");
+                                    markerMap.get(gm.getId()).put("Year", Integer.toString(year));
                                     int direct_deaths = object.getInt("Direct_deaths");
+                                    markerMap.get(gm.getId()).put("Dir_death", Integer.toString(direct_deaths));
                                     int indirect_deaths = object.getInt("Indirect_deaths");
+                                    markerMap.get(gm.getId()).put("Ind_death", Integer.toString(indirect_deaths));
                                     int dp_cost = object.getInt("DP_cost");
+                                    markerMap.get(gm.getId()).put("DP_cost", Integer.toString(dp_cost));
                                     int dc_cost = object.getInt("DC_cost");
+                                    markerMap.get(gm.getId()).put("DC_cost", Integer.toString(dc_cost));
                                     int indirect_injuries = object.getInt("Indirect_injuries");
+                                    markerMap.get(gm.getId()).put("Ind_inj", Integer.toString(indirect_injuries));
                                     int direct_injuries = object.getInt("direct_injuries");
+                                    markerMap.get(gm.getId()).put("Dir_inj", Integer.toString(direct_injuries));
                                     String source = object.getString("Source");
+                                    markerMap.get(gm.getId()).put("Source", source);
 
                                     Event e = new Event(county, state, date, event_id, episode_id, event_type, lat, lng, mag, year, direct_deaths, indirect_deaths, dp_cost, dc_cost, indirect_injuries, direct_injuries, source);
                                     events.add(e);
