@@ -31,12 +31,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
-    //private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/get_deaths.php";
+    private static final String EVENT_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
+    private static final String DEM_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/populations.php";
     private ArrayList<Event> events;
+    private ArrayList<Demographic> demographics;
 
     private Button get;
     private Button mmode;
+    private Button demButton;
     private TextView event;
 
     Intent intent;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         get = findViewById(R.id.get);
         mmode = findViewById(R.id.mmode);
         event = findViewById(R.id.event);
+        demButton = findViewById(R.id.demographicsBtn);
 
         direct_death = findViewById(R.id.direct_deaths);
         indirect_death = findViewById(R.id.indirect_deaths);
@@ -90,7 +93,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        demButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDemographics();
+            }
+        });
+
+
+
         events = new ArrayList<>();
+        demographics = new ArrayList<>();
+
     }
 
     //radio button values
@@ -123,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, BASE_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EVENT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -204,6 +218,200 @@ public class MainActivity extends AppCompatActivity {
                 params.put("to", to.getText().toString().trim());
 
 
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+
+    private void getDemographics() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DEM_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            demographics.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String STNAME = object.getString("STNAME");
+                                String CTYNAME = object.getString("CTYNAME");
+                                int YEAR = object.getInt("YEAR");
+                                int AGEGRP = object.getInt("AGEGRP");
+                                int TOT_POP = object.getInt("TOT_POP");
+                                int TOT_MALE = object.getInt("TOT_MALE");
+                                int TOT_FEMALE = object.getInt("TOT_FEMALE");
+                                int WA_MALE = object.getInt("WA_MALE");
+                                int WA_FEMALE = object.getInt("WA_FEMALE");
+                                int BA_MALE = object.getInt("BA_MALE");
+                                int BA_FEMALE = object.getInt("BA_FEMALE");
+                                int IA_MALE = object.getInt("IA_MALE");
+                                int IA_FEMALE = object.getInt("IA_FEMALE");
+                                int AA_MALE = object.getInt("AA_MALE");
+                                int AA_FEMALE = object.getInt("AA_FEMALE");
+                                int NA_MALE = object.getInt("NA_MALE");
+                                int NA_FEMALE = object.getInt("NA_FEMALE");
+                                int TOM_MALE = object.getInt("TOM_MALE");
+                                int TOM_FEMALE = object.getInt("TOM_FEMALE");
+                                int WAC_MALE = object.getInt("WAC_MALE");
+                                int WAC_FEMALE = object.getInt("WAC_FEMALE");
+                                int BAC_MALE = object.getInt("BAC_MALE");
+                                int BAC_FEMALE = object.getInt("BAC_FEMALE");
+                                int IAC_MALE = object.getInt("IAC_MALE");
+                                int IAC_FEMALE = object.getInt("IAC_FEMALE");
+                                int AAC_MALE = object.getInt("AAC_MALE");
+                                int AAC_FEMALE = object.getInt("AAC_FEMALE");
+                                int NAC_MALE = object.getInt("NAC_MALE");
+                                int NAC_FEMALE = object.getInt("NAC_FEMALE");
+                                int NH_MALE = object.getInt("NH_MALE");
+                                int NH_FEMALE = object.getInt("NH_FEMALE");
+                                int NHWA_MALE = object.getInt("NHWA_MALE");
+                                int NHWA_FEMALE = object.getInt("NHWA_FEMALE");
+                                int NHBA_MALE = object.getInt("NHBA_MALE");
+                                int NHBA_FEMALE = object.getInt("NHBA_FEMALE");
+                                int NHIA_MALE = object.getInt("NHIA_MALE");
+                                int NHIA_FEMALE = object.getInt("NHIA_FEMALE");
+                                int NHAA_MALE = object.getInt("NHAA_MALE");
+                                int NHAA_FEMALE = object.getInt("NHAA_FEMALE");
+                                int NHNA_MALE = object.getInt("NHNA_MALE");
+                                int NHNA_FEMALE = object.getInt("NHNA_FEMALE");
+                                int NHTOM_MALE = object.getInt("NHTOM_MALE");
+                                int NHTOM_FEMALE = object.getInt("NHTOM_FEMALE");
+                                int NHWAC_MALE = object.getInt("NHWAC_MALE");
+                                int NHWAC_FEMALE = object.getInt("NHWAC_FEMALE");
+                                int NHBAC_MALE = object.getInt("NHBAC_MALE");
+                                int NHBAC_FEMALE = object.getInt("NHBAC_FEMALE");
+                                int NHIAC_MALE = object.getInt("NHIAC_MALE");
+                                int NHIAC_FEMALE = object.getInt("NHIAC_FEMALE");
+                                int NHAAC_MALE = object.getInt("NHAAC_MALE");
+                                int NHAAC_FEMALE = object.getInt("NHAAC_FEMALE");
+                                int NHNAC_MALE = object.getInt("NHNAC_MALE");
+                                int NHNAC_FEMALE = object.getInt("NHNAC_FEMALE");
+                                int H_MALE = object.getInt("H_MALE");
+                                int H_FEMALE = object.getInt("H_FEMALE");
+                                int HWA_MALE = object.getInt("HWA_MALE");
+                                int HWA_FEMALE = object.getInt("HWA_FEMALE");
+                                int HBA_MALE = object.getInt("HBA_MALE");
+                                int HBA_FEMALE = object.getInt("HBA_FEMALE");
+                                int HIA_MALE = object.getInt("HIA_MALE");
+                                int HIA_FEMALE = object.getInt("HIA_FEMALE");
+                                int HAA_MALE = object.getInt("HAA_MALE");
+                                int HAA_FEMALE = object.getInt("HAA_FEMALE");
+                                int HNA_MALE = object.getInt("HNA_MALE");
+                                int HNA_FEMALE = object.getInt("HNA_FEMALE");
+                                int HTOM_MALE = object.getInt("HTOM_MALE");
+                                int HTOM_FEMALE = object.getInt("HTOM_FEMALE");
+                                int HWAC_MALE = object.getInt("HWAC_MAL");
+                                int HWAC_FEMALE = object.getInt("HWAC_FEMALE");
+                                int HBAC_MALE = object.getInt("HBAC_MALE");
+                                int HBAC_FEMALE = object.getInt("HBAC_FEMALE");
+                                int HIAC_MALE = object.getInt("HIAC_MALE");
+                                int HIAC_FEMALE = object.getInt("HIAC_FEMALE");
+                                int HAAC_MALE = object.getInt("HAAC_MALE");
+                                int HAAC_FEMALE = object.getInt("HAAC_FEMALE");
+                                int HNAC_MALE = object.getInt("HNAC_MALE");
+                                int HNAC_FEMALE = object.getInt("HNAC_FEMALE");
+
+                                Demographic demo = new Demographic(STNAME, CTYNAME,YEAR ,AGEGRP ,TOT_POP ,TOT_MALE ,TOT_FEMALE ,WA_MALE ,WA_FEMALE ,BA_MALE ,BA_FEMALE ,IA_MALE ,IA_FEMALE ,AA_MALE ,AA_FEMALE ,NA_MALE ,NA_FEMALE ,TOM_MALE ,TOM_FEMALE ,WAC_MALE ,WAC_FEMALE ,BAC_MALE ,BAC_FEMALE ,IAC_MALE ,IAC_FEMALE ,AAC_MALE ,AAC_FEMALE ,NAC_MALE ,NAC_FEMALE ,NH_MALE ,NH_FEMALE ,NHWA_MALE ,NHWA_FEMALE ,NHBA_MALE ,NHBA_FEMALE ,NHIA_MALE ,NHIA_FEMALE ,NHAA_MALE ,NHAA_FEMALE ,NHNA_MALE ,NHNA_FEMALE ,NHTOM_MALE ,NHTOM_FEMALE ,NHWAC_MALE ,NHWAC_FEMALE ,NHBAC_MALE ,NHBAC_FEMALE ,NHIAC_MALE ,NHIAC_FEMALE ,NHAAC_MALE ,NHAAC_FEMALE ,NHNAC_MALE ,NHNAC_FEMALE ,H_MALE ,H_FEMALE ,HWA_MALE ,HWA_FEMALE ,HBA_MALE ,HBA_FEMALE ,HIA_MALE ,HIA_FEMALE ,HAA_MALE ,HAA_FEMALE ,HNA_MALE ,HNA_FEMALE ,HTOM_MALE ,HTOM_FEMALE ,HWAC_MALE ,HWAC_FEMALE ,HBAC_MALE ,HBAC_FEMALE ,HIAC_MALE ,HIAC_FEMALE ,HAAC_MALE ,HAAC_FEMALE ,HNAC_MALE ,HNAC_FEMALE);
+
+                                demographics.add(demo);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                        //event.setVisibility(View.INVISIBLE);
+                        event.setText("");
+                        System.out.println(demographics.size());
+                        for (int i = 0; i < demographics.size(); i++) {
+                            event.append("Demographic " + i + ": " + demographics.get(i).getCTYNAME() + " " +
+                                    demographics.get(i).getSTNAME() + " " +
+                                    demographics.get(i).getAA_FEMALE() + " " +
+                                    demographics.get(i).getAA_MALE() + " " +
+                                    demographics.get(i).getAAC_FEMALE() + " " +
+                                    demographics.get(i).getAAC_MALE() + " " +
+                                    demographics.get(i).getAGEGRP() + " " +
+                                    demographics.get(i).getBA_FEMALE() + " " +
+                                    demographics.get(i).getBA_MALE() + " " +
+                                    demographics.get(i).getBAC_FEMALE() + " " +
+                                    demographics.get(i).getBAC_MALE() + " " +
+                                    demographics.get(i).getH_FEMALE() + " " +
+                                    demographics.get(i).getH_MALE() + " " +
+                                    demographics.get(i).getHAA_FEMALE() + " " +
+                                    demographics.get(i).getHAA_MALE() + " " +
+                                    demographics.get(i).getHAAC_FEMALE() + " " +
+                                    demographics.get(i).getHAAC_MALE() + " " +
+                                    demographics.get(i).getHBA_FEMALE() + " " +
+                                    demographics.get(i).getHBA_MALE() + " " +
+                                    demographics.get(i).getHIA_FEMALE() + " " +
+                                    demographics.get(i).getHIA_MALE() + " " +
+                                    demographics.get(i).getHIAC_FEMALE() + " " +
+                                    demographics.get(i).getHIAC_MALE() + " " +
+                                    demographics.get(i).getHNA_FEMALE() + " " +
+                                    demographics.get(i).getHNA_MALE() + " " +
+                                    demographics.get(i).getHNAC_FEMALE() + " " +
+                                    demographics.get(i).getHNAC_MALE() + " " +
+                                    demographics.get(i).getHTOM_FEMALE() + " " +
+                                    demographics.get(i).getHTOM_MALE() + " " +
+                                    demographics.get(i).getHWA_FEMALE() + " " +
+                                    demographics.get(i).getHWA_MALE() + " " +
+                                    demographics.get(i).getHWAC_FEMALE() + " " +
+                                    demographics.get(i).getHWAC_MALE() + " " +
+                                    demographics.get(i).getIA_FEMALE() + " " +
+                                    demographics.get(i).getIA_MALE() + " " +
+                                    demographics.get(i).getIAC_FEMALE() + " " +
+                                    demographics.get(i).getIAC_MALE() + " " +
+                                    demographics.get(i).getNA_FEMALE() + " " +
+                                    demographics.get(i).getNA_MALE() + " " +
+                                    demographics.get(i).getNAC_FEMALE() + " " +
+                                    demographics.get(i).getNAC_MALE() + " " +
+                                    demographics.get(i).getNH_FEMALE() + " " +
+                                    demographics.get(i).getNH_MALE() + " " +
+                                    demographics.get(i).getNHAA_FEMALE() + " " +
+                                    demographics.get(i).getNHAA_MALE() + " " +
+                                    demographics.get(i).getNHAAC_FEMALE() + " " +
+                                    demographics.get(i).getNHAAC_MALE() + " " +
+                                    demographics.get(i).getNHBA_FEMALE() + " " +
+                                    demographics.get(i).getNHBA_MALE() + " " +
+                                    demographics.get(i).getNHBAC_FEMALE() + " " +
+                                    demographics.get(i).getNHBAC_MALE() + " " +
+                                    demographics.get(i).getNHIA_FEMALE() + " " +
+                                    demographics.get(i).getNHIA_MALE() + " " +
+                                    demographics.get(i).getNHIAC_FEMALE() + " " +
+                                    demographics.get(i).getNHIAC_MALE() + " " +
+                                    demographics.get(i).getNHNA_FEMALE() + " " +
+                                    demographics.get(i).getNHNA_MALE() + " " +
+                                    demographics.get(i).getNHNAC_FEMALE() + " " +
+                                    demographics.get(i).getNHNAC_MALE() + " " +
+                                    demographics.get(i).getTOT_MALE() + " " +
+                                    demographics.get(i).getTOT_FEMALE() + " " +
+                                    demographics.get(i).getTOT_POP() +
+
+                                    //cut some short
+                                    "\n");
+                        }
+
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("state", state.getText().toString().trim());
+                params.put("county", county.getText().toString().trim());
                 return params;
             }
         };

@@ -18,6 +18,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/mainInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Scroll up and down to see more options!"
+                android:gravity="center"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout5"
                 android:layout_width="409dp"
@@ -152,6 +160,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:text="USE TABLE MODE"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/demographicsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="SHOW DEMOGRAPHICS"
                 android:gravity="center" />
 
             <TextView
