@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
+    //private static final String BASE_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/get_deaths.php";
     private ArrayList<Event> events;
 
     private Button get;
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText weather;
     private EditText from;
     private EditText to;
+
+    private RadioButton direct_death;
+    private RadioButton indirect_death;
+    private RadioButton direct_injury;
+    private RadioButton indirect_injury;
+    private String buttonResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         mmode = findViewById(R.id.mmode);
         event = findViewById(R.id.event);
 
+        direct_death = findViewById(R.id.direct_deaths);
+        indirect_death = findViewById(R.id.indirect_deaths);
+        direct_injury = findViewById(R.id.direct_injuries);
+        indirect_injury = findViewById(R.id.indirect_injuries);
+        buttonResponse = "";
+
         mmode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +91,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
         events = new ArrayList<>();
+    }
+
+    //radio button values
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.direct_deaths:
+                if (checked)
+                    buttonResponse = "Direct death";
+                    break;
+            case R.id.indirect_deaths:
+                if (checked)
+                    buttonResponse = "Indirect death";
+                    break;
+            case R.id.direct_injuries:
+                if (checked)
+                    buttonResponse = "Direct injury";
+                    break;
+            case R.id.indirect_injuries:
+                if (checked)
+                    buttonResponse = "Indirect injury";
+                    break;
+        }
     }
 
     private void getTestEvents() {
@@ -127,7 +167,22 @@ public class MainActivity extends AppCompatActivity {
                         event.setText("");
 
                         for (int i = 0; i < events.size(); i++) {
-                            event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "\n");
+                            if (buttonResponse.equals("")) {
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "\n");
+                            }
+                            else if (buttonResponse.equals("Direct death")) {
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getDirect_deaths() + "\n");
+                            }
+                            else if (buttonResponse.equals("Indirect death")) {
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getIndirect_deaths() + "\n");
+                            }
+                            else if (buttonResponse.equals("Direct injury")) {
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getDirect_injuries() + "\n");
+                            }
+                            else {
+                                //indirect injury
+                                event.append("Event " + i + ": " + events.get(i).getCounty() + " " + events.get(i).getState() + " " + events.get(i).getDate() + " " + events.get(i).getEvent_type() + "" + events.get(i).getIndirect_injuries() + "\n");
+                            }
                         }
 
 
@@ -147,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
                 params.put("event_type", weather.getText().toString().trim());
                 params.put("from", from.getText().toString().trim());
                 params.put("to", to.getText().toString().trim());
+
+
                 return params;
             }
         };
