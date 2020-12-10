@@ -17,7 +17,10 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ZipCodeActivity extends AppCompatActivity {
@@ -56,16 +59,36 @@ public class ZipCodeActivity extends AppCompatActivity {
                         try{
                             list = geocoder.getFromLocationName(mEdit.getText().toString(), 1);
                         }catch (IOException e) {
-
+                            Toast.makeText(view.getContext(), "Invalid Zip Code!",Toast.LENGTH_SHORT).show();
                         }
-                        if(list.size() > 0) {
+
+                        boolean valid = true;
+                        if (weather.getText().toString().isEmpty()) {
+                            weather.setError("Field Required!");
+                            valid = false;
+                        }
+
+                        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                        try {
+                            Date date = df.parse(from.getText().toString());
+                        } catch (Exception e) {
+                            from.setError("Invalid date!");
+                            valid = false;
+                        }
+
+                        try {
+                            Date date = df.parse(to.getText().toString());
+                        } catch (Exception e) {
+                            to.setError("Invalid date!");
+                            valid = false;
+                        }
+
+                        if(list.size() > 0 && valid) {
                             intent.putExtra("ZIP", mEdit.getText().toString());
                             intent.putExtra("weather", weather.getText().toString().trim());
                             intent.putExtra("from", from.getText().toString().trim());
                             intent.putExtra("to", to.getText().toString().trim());
                             startActivity(intent);
-                        } else {
-                            Toast.makeText(view.getContext(), "Invalid Zip Code!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -75,11 +98,35 @@ public class ZipCodeActivity extends AppCompatActivity {
                 {
                     public void onClick(View v)
                     {
-                        intent.putExtra("ZIP", "None");
-                        intent.putExtra("weather", weather.getText().toString().trim());
-                        intent.putExtra("from", from.getText().toString().trim());
-                        intent.putExtra("to", to.getText().toString().trim());
-                        startActivity(intent);
+                        boolean valid = true;
+                        if (weather.getText().toString().isEmpty()) {
+                            weather.setError("Field Required!");
+                            valid = false;
+                        }
+
+                        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                        try {
+                            Date date = df.parse(from.getText().toString());
+                        } catch (Exception e) {
+                            from.setError("Invalid date!");
+                            valid = false;
+                        }
+
+                        try {
+                            Date date = df.parse(to.getText().toString());
+                        } catch (Exception e) {
+                            to.setError("Invalid date!");
+                            valid = false;
+                        }
+
+
+                        if (valid) {
+                            intent.putExtra("ZIP", "None");
+                            intent.putExtra("weather", weather.getText().toString().trim());
+                            intent.putExtra("from", from.getText().toString().trim());
+                            intent.putExtra("to", to.getText().toString().trim());
+                            startActivity(intent);
+                        }
                     }
                 });
 

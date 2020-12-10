@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                                 int HNA_FEMALE = object.getInt("HNA_FEMALE");
                                 int HTOM_MALE = object.getInt("HTOM_MALE");
                                 int HTOM_FEMALE = object.getInt("HTOM_FEMALE");
-                                int HWAC_MALE = object.getInt("HWAC_MAL");
+                                int HWAC_MALE = object.getInt("HWAC_MALE");
                                 int HWAC_FEMALE = object.getInt("HWAC_FEMALE");
                                 int HBAC_MALE = object.getInt("HBAC_MALE");
                                 int HBAC_FEMALE = object.getInt("HBAC_FEMALE");
