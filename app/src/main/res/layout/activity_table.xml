@@ -229,6 +229,34 @@
                 android:textColor="@color/cardview_light_background"
                 android:verticalScrollbarPosition="right" />
 
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bargraph1"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:visibility="gone">
+
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bargraph2"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:visibility="gone"></com.github.mikephil.charting.charts.BarChart>
+
         </LinearLayout>
     </ScrollView>
 

@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +21,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONArray;
@@ -56,12 +65,16 @@ public class TableActivity extends AppCompatActivity {
     private RadioButton indirect_injury;
     private String buttonResponse;
 
+    private BarChart barChart;
+
+    private boolean processingDemo = false;
+    private ProgressBar progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table);
         intent = new Intent(this, ZipCodeActivity.class);
-
 
         state = findViewById(R.id.state);
         county = findViewById(R.id.county);
@@ -147,7 +160,7 @@ public class TableActivity extends AppCompatActivity {
                     valid = false;
                 }
 
-                if (valid) {
+                if (valid && !processingDemo) {
                     getDemographics();
                 }
             }
@@ -280,9 +293,17 @@ public class TableActivity extends AppCompatActivity {
 
 
     private void getDemographics() {
+        processingDemo = true;
+        progress = findViewById(R.id.progressBar1);
+        progress.setVisibility(View.VISIBLE);
+        progress = findViewById(R.id.progressBar2);
+        progress.setVisibility(View.VISIBLE);
+        barChart = findViewById(R.id.bargraph1);
+        barChart.setVisibility(View.GONE);
+        barChart = findViewById(R.id.bargraph2);
+        barChart.setVisibility(View.GONE);
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DEM_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -377,13 +398,13 @@ public class TableActivity extends AppCompatActivity {
                                 demographics.add(demo);
                             }
                         } catch (Exception e) {
-
+                            processingDemo = false;
                         }
 
                         //event.setVisibility(View.INVISIBLE);
                         event.setText("");
                         System.out.println(demographics.size());
-                        for (int i = 0; i < demographics.size(); i++) {
+                        /*for (int i = 0; i < demographics.size(); i++) {
                             event.append("Demographic " + i + ": " + demographics.get(i).getCTYNAME() + " " +
                                     demographics.get(i).getSTNAME() + " " +
                                     demographics.get(i).getAA_FEMALE() + " " +
@@ -449,15 +470,28 @@ public class TableActivity extends AppCompatActivity {
 
                                     //cut some short
                                     "\n");
-                        }
+                        }*/
+                        //Set up first chart
+                        barChart = findViewById(R.id.bargraph1);
+                        barChart.setVisibility(View.VISIBLE);
+                        createChart(barEntriesM(demographics, 2018), barEntriesF(demographics, 2018), 2018);
+                        progress = findViewById(R.id.progressBar1);
+                        progress.setVisibility(View.GONE);
 
+                        //Set up second chart
+                        barChart = findViewById(R.id.bargraph2);
+                        barChart.setVisibility(View.VISIBLE);
+                        createChart(barEntriesM(demographics, 2019), barEntriesF(demographics, 2019), 2019);
+                        progress = findViewById(R.id.progressBar2);
+                        progress.setVisibility(View.GONE);
 
-
+                        processingDemo = false;
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+                processingDemo = false;
             }
         }){
             @Override
@@ -470,5 +504,83 @@ public class TableActivity extends AppCompatActivity {
         };
         //execute your request
         queue.add(stringRequest);
+    }
+
+    private void createChart(ArrayList<BarEntry> barEntriesM, ArrayList<BarEntry> barEntriesF, int year) {
+        //Y-axis
+        BarDataSet barDataSet1 = new BarDataSet(barEntriesM, "Male (" + year + ")");
+        barDataSet1.setColor(Color.RED);
+        BarDataSet barDataSet2 = new BarDataSet(barEntriesF, "Female (" + year + ")");
+        barDataSet2.setColor(Color.BLUE);
+
+        BarData data = new BarData(barDataSet1, barDataSet2);
+        barChart.setData(data);
+        barChart.getDescription().setEnabled(false);
+
+        //X-axis
+        String[] pops = new String[] {"Total", "White", "Black"};
+        final int NUM_CATEGORIES = 3;
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(pops));
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setDrawAxisLine(false);
+
+        barChart.setDragEnabled(true);
+        barChart.setVisibleXRangeMaximum(3);
+
+        float barSpace = 0;
+        float groupSpace = 0.68f;
+
+        data.setBarWidth(0.16f);
+        barChart.getXAxis().setAxisMinimum(0);
+        barChart.getXAxis().setAxisMaximum(0 + barChart.getBarData().getGroupWidth(groupSpace,barSpace)*NUM_CATEGORIES);
+        barChart.getAxisLeft().setAxisMinimum(0);
+
+        barChart.groupBars(0, groupSpace, barSpace);
+
+        barChart.notifyDataSetChanged();
+        barChart.invalidate();
+    }
+
+    private ArrayList<BarEntry> barEntriesM(ArrayList<Demographic> demographics, int year) {
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        int TOT_MALE = 0;
+        int WA_MALE = 0;
+        int BA_MALE = 0;
+        for (Demographic d: demographics) {
+            //Totals rows
+            if (d.getAGEGRP() == 0 && d.getYEAR() == year) {
+                TOT_MALE += d.getTOT_MALE();
+                WA_MALE += d.getWA_MALE();
+                BA_MALE += d.getBA_MALE();
+            }
+        }
+        barEntries.add(new BarEntry(1, TOT_MALE));
+        barEntries.add(new BarEntry(2, WA_MALE));
+        barEntries.add(new BarEntry(3, BA_MALE));
+        return barEntries;
+    }
+
+    private ArrayList<BarEntry> barEntriesF(ArrayList<Demographic> demographics, int year) {
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        int TOT_FEMALE = 0;
+        int WA_FEMALE = 0;
+        int BA_FEMALE = 0;
+        for (Demographic d: demographics) {
+            //Totals rows
+            if (d.getAGEGRP() == 0 && d.getYEAR() == year) {
+                TOT_FEMALE += d.getTOT_FEMALE();
+                WA_FEMALE += d.getWA_FEMALE();
+                BA_FEMALE += d.getBA_FEMALE();
+            }
+        }
+        barEntries.add(new BarEntry(1, TOT_FEMALE));
+        barEntries.add(new BarEntry(2, WA_FEMALE));
+        barEntries.add(new BarEntry(3, BA_FEMALE));
+
+        return barEntries;
     }
 }
