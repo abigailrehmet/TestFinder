@@ -22,7 +22,7 @@
             android:shadowColor="#000000"
             android:text="@string/map_instructions"
             android:textAlignment="center"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@android:color/background_light"
             android:textSize="18sp" />
 
         <pl.droidsonroids.gif.GifImageView
@@ -50,7 +50,7 @@
             android:layout_marginStart="10sp"
             android:layout_marginEnd="10sp"
             android:hint="Weather (ex. Flood)"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/cardview_light_background"
             android:textColorHint="@color/cardview_dark_background" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +75,7 @@
         android:ems="10"
         android:hint="mm/dd/yyyy"
         android:inputType="date"
-        android:textColor="@color/cardview_dark_background"
+        android:textColor="@color/cardview_light_background"
         android:textColorHint="@color/cardview_light_background" />
 
     <EditText
@@ -114,7 +114,7 @@
         android:fontFamily="casual"
         android:gravity="center"
         android:text="@string/currLocationTxt"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/cardview_light_background" />
 
     <Button
         android:id="@+id/button2"

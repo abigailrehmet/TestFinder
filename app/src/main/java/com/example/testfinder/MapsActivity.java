@@ -147,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 //create marker options
                                 MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                                 //Zoom map
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 50));
                                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                                 //add marker on map
                                 googleMap.addMarker(options);
@@ -549,7 +549,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 double lng = Double.parseDouble(object.getString("Longitude"));
 
                                 //If the distances are within 250 miles
-                                if(distance(thislat, thislng, lat, lng, "M") < 20) {
+                                if(distance(thislat, thislng, lat, lng, "M") < 250) {
                                     MarkerOptions options1 = new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
                                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
