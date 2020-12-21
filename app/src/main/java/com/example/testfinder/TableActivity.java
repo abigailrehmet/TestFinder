@@ -127,7 +127,7 @@ public class TableActivity extends AppCompatActivity {
 
 
                 if (valid) {
-                    //getTestEvents();
+                    getTestEvents();
                     getStateTemps();
                 }
             }
