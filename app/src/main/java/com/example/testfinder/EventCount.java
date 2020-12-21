@@ -1,13 +1,12 @@
 package com.example.testfinder;
 
 class EventCount {
-    int eventID;
-    public EventCount(int eventid) {
-        this.eventID = eventid;
+    int eventNum;
+    public EventCount(int eventNum) {
+        this.eventNum = eventNum;
     }
 
-    public int getEventID() {
-        return eventID;
+    public int getEventNum() {
+        return eventNum;
     }
-
 }

@@ -256,7 +256,15 @@
                 android:id="@+id/bargraph2"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:visibility="gone"></com.github.mikephil.charting.charts.BarChart>
+                android:visibility="gone">
+
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <Button
+                android:id="@+id/clearAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clear ALl" />
 
             <RadioGroup
                 android:id="@+id/extraOptions"
@@ -277,6 +285,31 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Count the total number of direct deaths from selected weather event for each state whose minimum temperature was lower than [temp] in  2018" />
+
+                <EditText
+                    android:id="@+id/total_deaths_temp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="temp"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/q1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Run" />
+
+                <TextView
+                    android:id="@+id/q1out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <RadioButton
                     android:id="@+id/query2"
                     android:layout_width="wrap_content"
@@ -286,6 +319,31 @@
                     android:text="Click to see advanced query 2"
                     android:textColor="@color/colorAccent"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="List the natural disasters that have resulted in over [number] direct deaths for each county in the selected state." />
+
+                <EditText
+                    android:id="@+id/natty_disaster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="number"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/q2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Run" />
+
+                <TextView
+                    android:id="@+id/q2out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <RadioButton
                     android:id="@+id/query3"
@@ -297,6 +355,23 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="List the damage cost (excluding 0) from selected event in all counties/states and the percentage of hispanic and black there and the date." />
+
+                <Button
+                    android:id="@+id/q3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Run" />
+
+                <TextView
+                    android:id="@+id/q3out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <RadioButton
                     android:id="@+id/query4"
                     android:layout_width="246dp"
@@ -307,15 +382,38 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="15sp" />
 
-                <RadioButton
-                    android:id="@+id/query5"
-                    android:layout_width="246dp"
-                    android:layout_height="46dp"
-                    android:layout_marginLeft="5dp"
-                    android:onClick="onAdvancedStatementsClicked"
-                    android:text="Click to see advanced query 5"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="What was the average, max, and min temperature in selected state in [month (ex. 07)] [year (2018 or 2019)]" />
+
+                <EditText
+                    android:id="@+id/state_temps1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="month"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/state_temps2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="year"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/q4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Run" />
+
+                <TextView
+                    android:id="@+id/q4out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </RadioGroup>
 

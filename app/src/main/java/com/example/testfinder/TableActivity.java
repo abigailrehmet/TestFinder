@@ -59,6 +59,17 @@ public class TableActivity extends AppCompatActivity {
     private Button showEvents;
     private Button demButton;
     private TextView event;
+    private TextView q1out;
+    private TextView q2out;
+    private TextView q3out;
+    private TextView q4out;
+
+
+    private Button q1;
+    private Button q2;
+    private Button q3;
+    private Button q4;
+    private Button clearAll;
 
     Intent intent;
 
@@ -68,6 +79,10 @@ public class TableActivity extends AppCompatActivity {
     private TextInputEditText weather;
     private EditText from;
     private EditText to;
+    private EditText total_deaths_temp;
+    private EditText natty_disaster;
+    private EditText state_temps1;
+    private EditText state_temps2;
 
     private RadioButton direct_death;
     private RadioButton indirect_death;
@@ -91,9 +106,17 @@ public class TableActivity extends AppCompatActivity {
         weather = findViewById(R.id.weather);
         from = findViewById(R.id.from);
         to = findViewById(R.id.to);
-
+        total_deaths_temp = findViewById(R.id.total_deaths_temp);
+        natty_disaster = findViewById(R.id.natty_disaster);
+        state_temps1 = findViewById(R.id.state_temps1);
+        state_temps2 = findViewById(R.id.state_temps2);
 
         event = findViewById(R.id.event);
+        q1out = findViewById(R.id.q1out);
+        q2out = findViewById(R.id.q2out);
+        q3out = findViewById(R.id.q3out);
+        q4out = findViewById(R.id.q4out);
+
         demButton = findViewById(R.id.demographicsBtn);
 
         direct_death = findViewById(R.id.direct_deaths);
@@ -102,6 +125,49 @@ public class TableActivity extends AppCompatActivity {
         indirect_injury = findViewById(R.id.indirect_injuries);
         buttonResponse = "";
 
+        clearAll = findViewById(R.id.clearAll);
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                q1out.setText("");
+                q2out.setText("");
+                q3out.setText("");
+                q4out.setText("");
+                q5out.setText("");
+            }
+        });
+
+        q4 = findViewById(R.id.q4);
+        q4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getStateTemps();
+            }
+        });
+
+        q3 = findViewById(R.id.q3);
+        q3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBHPercentage();
+            }
+        });
+
+        q2 = findViewById(R.id.q2);
+        q2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNattyDisasters();
+            }
+        });
+
+        q1 = findViewById(R.id.q1);
+        q1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getTotalDeaths();
+            }
+        });
         showEvents = findViewById(R.id.showEventsBtn);
         showEvents.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,12 +199,7 @@ public class TableActivity extends AppCompatActivity {
 
 
                 if (valid) {
-                    //getTestEvents();
-                    //getStateTemps();
-                    //getBHPercentage();
-                    //getTotalDeaths();
-                    getEventCount();
-                    //getNattyDisasters();
+                    getTestEvents();
                 }
             }
         });
@@ -650,6 +711,12 @@ public class TableActivity extends AppCompatActivity {
 
                         }
 
+                        q3out.setText("");
+
+                        for (int i = 0; i < bhPercentages.size(); i++) {
+                            q3out.append("County" + i + ": " + bhPercentages.get(i).getCounty() + " State" + i + ": " + bhPercentages.get(i).getState() + " Date" + i + ": " + bhPercentages.get(i).getDate() + " Damage" + i + ": " + bhPercentages.get(i).getMind() + " Hispanic Rate" + i + ": " + bhPercentages.get(i).getHispanic_rate() + " Black Rate" + i + ": " + bhPercentages.get(i).getBlack_rate() +"\n");
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -698,6 +765,12 @@ public class TableActivity extends AppCompatActivity {
 
                         }
 
+                        q4out.setText("");
+
+                        for (int i = 0; i < stateTemps.size(); i++) {
+                            q4out.append("State" + i + ": " + stateTemps.get(i).getState().substring(0,2) + " Avg Max" + i + ": " + stateTemps.get(i).getAvgMax() +" Avg Min" + i + ": " + stateTemps.get(i).getAvgMin() + " Max" + i + ": " + stateTemps.get(i).getMax() + " Avg Min" + i + ": " + stateTemps.get(i).getAvgMin() +"\n");
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -708,9 +781,9 @@ public class TableActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("event_type", weather.getText().toString().trim());
-                params.put("month", "07");
-                params.put("year", "2018");
+                params.put("state", state.getText().toString().trim());
+                params.put("month", state_temps1.getText().toString().trim());
+                params.put("year", state_temps2.getText().toString().trim());
 
                 return params;
             }
@@ -744,50 +817,10 @@ public class TableActivity extends AppCompatActivity {
 
                         }
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params=new HashMap<String, String>();
-                params.put("weather", weather.getText().toString().trim());
-                params.put("year", "2018");
-                params.put("number", "4"); //ARE YOU FREAKING KIDDING MEEE LOL
+                        q1out.setText("");
 
-                return params;
-            }
-        };
-        //execute your request
-        queue.add(stringRequest);
-    }
-
-    private void getEventCount() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, EventCount_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray array = new JSONArray(response);
-                            System.out.println(array);
-                            eventCounts.clear();
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject object = array.getJSONObject(i);
-
-                                int event_id = object.getInt("Event_id");
-
-                                EventCount e = new EventCount(event_id);
-                                eventCounts.add(e);
-                                System.out.println("number of events-->" + eventCounts);
-                            }
-                        } catch (Exception e) {
-
+                        for (int i = 0; i < totalDeaths.size(); i++) {
+                            q1out.append("Direct Deaths" + i + ": " + totalDeaths.get(i).getDDeath() + "\n");
                         }
 
                     }
@@ -800,11 +833,9 @@ public class TableActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("state1", "1");
-                params.put("state2", "2");
-                params.put("state3", "3");
                 params.put("weather", weather.getText().toString().trim());
-                params.put("number", "4");
+                params.put("year", "2018");
+                params.put("number", total_deaths_temp.getText().toString().trim()); //ARE YOU FREAKING KIDDING MEEE LOL
 
                 return params;
             }
@@ -839,6 +870,12 @@ public class TableActivity extends AppCompatActivity {
 
                         }
 
+                        q2out.setText("");
+
+                        for (int i = 0; i < nattyDisasters.size(); i++) {
+                            q2out.append("County" + i + ": " + nattyDisasters.get(i).getCounty() + " Event type" + i + ": " + nattyDisasters.get(i).getEventType() +"\n");
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -849,7 +886,7 @@ public class TableActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("number", "1");
+                params.put("number", natty_disaster.getText().toString().trim());
                 params.put("state", state.getText().toString().trim());
 
                 return params;
