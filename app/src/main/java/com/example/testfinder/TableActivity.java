@@ -45,10 +45,16 @@ public class TableActivity extends AppCompatActivity {
     private static final String DEM_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/populations.php";
     private static final String BH_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/BH_percentage.php";
     private static final String StateTemp_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/State_temps.php";
+    private static final String TotalDeath_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Total_deaths.php";
+    private static final String EventCount_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Event_count.php";
+    private static final String NatDisaster_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Natty_disasters.php";
     private ArrayList<Event> events;
     private ArrayList<Demographic> demographics;
     private ArrayList<BHPercentage> bhPercentages;
     private ArrayList<StateTemp> stateTemps;
+    private ArrayList<TotalDeath> totalDeaths;
+    private ArrayList<EventCount> eventCounts;
+    private ArrayList<NattyDisaster> nattyDisasters;
 
     private Button showEvents;
     private Button demButton;
@@ -128,8 +134,11 @@ public class TableActivity extends AppCompatActivity {
 
                 if (valid) {
                     //getTestEvents();
-                    getStateTemps();
+                    //getStateTemps();
                     //getBHPercentage();
+                    getTotalDeaths();
+                    getEventCount();
+                    getNattyDisasters();
                 }
             }
         });
@@ -178,6 +187,9 @@ public class TableActivity extends AppCompatActivity {
         demographics = new ArrayList<>();
         bhPercentages = new ArrayList<>();
         stateTemps = new ArrayList<>();
+        totalDeaths = new ArrayList<>();
+        eventCounts = new ArrayList<>();
+        nattyDisasters = new ArrayList<>();
 
     }
 
@@ -668,7 +680,7 @@ public class TableActivity extends AppCompatActivity {
                         try {
                             JSONArray array = new JSONArray(response);
                             System.out.println(array);
-                            //events.clear();
+                            stateTemps.clear();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject object = array.getJSONObject(i);
 
@@ -699,6 +711,150 @@ public class TableActivity extends AppCompatActivity {
                 params.put("event_type", weather.getText().toString().trim());
                 params.put("month", "07");
                 params.put("year", "2018");
+
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+    private void getTotalDeaths() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, TotalDeath_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            totalDeaths.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                int direct_deaths = object.getInt("Direct_deaths");
+                                int indirect_deaths = object.getInt("Indirect_deaths");
+                                int indirect_injuries = object.getInt("Indirect_injuries");
+                                int direct_injuries = object.getInt("Direct_injuries");
+
+                                TotalDeath t = new TotalDeath(direct_deaths, indirect_deaths, direct_injuries, indirect_injuries);
+                                totalDeaths.add(t);
+                                System.out.println("total deaths or injuries-->" + totalDeaths);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("death_option", "Direct_deaths");
+                params.put("weather", weather.getText().toString().trim());
+                params.put("year", "2018");
+
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+    private void getEventCount() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EventCount_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            eventCounts.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                int event_id = object.getInt("Event_id");
+
+                                EventCount e = new EventCount(event_id);
+                                eventCounts.add(e);
+                                System.out.println("number of events-->" + eventCounts);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("state1", "1");
+                params.put("state2", "2");
+                params.put("state3", "3");
+                params.put("weather", weather.getText().toString().trim());
+                params.put("number", "4");
+
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+    private void getNattyDisasters() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, NatDisaster_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            nattyDisasters.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String event_type = object.getString("Event_type");
+                                String county = object.getString("County");
+
+                                NattyDisaster n = new NattyDisaster(event_type, county);
+                                nattyDisasters.add(n);
+                                System.out.println("natural disasters-->" + nattyDisasters);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("death_option", "Direct_deaths");
+                params.put("number", "1");
+                params.put("state", state.getText().toString().trim());
 
                 return params;
             }
