@@ -42,9 +42,13 @@ import java.util.Map;
 
 public class TableActivity extends AppCompatActivity {
     private static final String EVENT_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/get_events.php";
-    private static final String DEM_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/populations.php";
+    private static final String DEM_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/populations.php";
+    private static final String BH_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/BH_percentage.php";
+    private static final String StateTemp_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/State_temps.php";
     private ArrayList<Event> events;
     private ArrayList<Demographic> demographics;
+    private ArrayList<BHPercentage> bhPercentages;
+    private ArrayList<StateTemp> stateTemps;
 
     private Button showEvents;
     private Button demButton;
@@ -123,7 +127,8 @@ public class TableActivity extends AppCompatActivity {
 
 
                 if (valid) {
-                    getTestEvents();
+                    //getTestEvents();
+                    getStateTemps();
                 }
             }
         });
@@ -595,4 +600,108 @@ public class TableActivity extends AppCompatActivity {
 
         return barEntries;
     }
+
+    private void getBHPercentage() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, BH_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            events.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                DateFormat df2 = new SimpleDateFormat("MM/dd/yyyy");
+                                Date d = df.parse(object.getString("Date"));
+                                String date = df2.format(d);
+
+                                int mind = object.getInt("Mind");
+                                String county = object.getString("County");
+                                String state = object.getString("State");
+                                Double hispanic_rate = Double.parseDouble(object.getString("Hispanic_rate"));
+                                Double black_rate = Double.parseDouble(object.getString("Black_rate"));
+
+                                BHPercentage b = new BHPercentage(mind, hispanic_rate, black_rate, date, state, county);
+                                bhPercentages.add(b);
+                                System.out.println("THESE ARE THE BH PERCENTAGES!" + bhPercentages);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("event_type", weather.getText().toString().trim());
+
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
+
+    private void getStateTemps() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, StateTemp_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            System.out.println(array);
+                            events.clear();
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+
+                                String state = object.getString("State");
+                                Double avgMax = Double.parseDouble(object.getString("avgMax"));
+                                Double avgMin = Double.parseDouble(object.getString("avgMin"));
+                                Double max = Double.parseDouble(object.getString("max"));
+                                Double min = Double.parseDouble(object.getString("min"));
+
+                                StateTemp s = new StateTemp(state, avgMax, avgMin, max, min);
+                                stateTemps.add(s);
+                                System.out.println("THESE ARE THE BH PERCENTAGES!" + stateTemps);
+                            }
+                        } catch (Exception e) {
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(TableActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params=new HashMap<String, String>();
+                params.put("event_type", weather.getText().toString().trim());
+                params.put("month", "07");
+                params.put("year", "2018");
+
+                return params;
+            }
+        };
+        //execute your request
+        queue.add(stringRequest);
+    }
 }
+
