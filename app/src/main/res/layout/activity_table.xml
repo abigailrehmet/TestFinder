@@ -225,6 +225,7 @@
                 android:layout_height="wrap_content"
                 android:isScrollContainer="true"
                 android:scrollbars="vertical"
+                android:textAlignment="center"
                 android:scrollHorizontally="false"
                 android:textColor="@color/cardview_light_background"
                 android:verticalScrollbarPosition="right" />

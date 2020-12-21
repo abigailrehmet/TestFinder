@@ -278,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             weather.setVisibility(View.VISIBLE);
 
             TextView place = findViewById(R.id.name);
-            place.setText(markerMap.get(id).get("County") + ", " + (markerMap.get(id)).get("State"));
+            place.setText(markerMap.get(id).get("County").toLowerCase() + ", " + (markerMap.get(id)).get("State"));
             place.setVisibility(View.VISIBLE);
 
             TextView date = findViewById(R.id.monday);
@@ -288,40 +288,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             /////////////////////////////////////////
 
             TextView eventID = findViewById(R.id.open);
-            eventID.setVisibility(View.VISIBLE);
-            eventID.setText(("Event ID: " + (markerMap.get(id)).get("Event id")));
+            String idString = (markerMap.get(id)).get("Event id");
+            if (idString != null) {
+                eventID.setVisibility(View.VISIBLE);
+                eventID.setText(("Event ID: " + idString));
+            }
+
 
             TextView magnitude = findViewById(R.id.tuesday);
-            magnitude.setVisibility(View.VISIBLE);
-            magnitude.setText(("Magnitude: " + (markerMap.get(id)).get("Magnitude")));
+            String mag = (markerMap.get(id)).get("Magnitude");
+            if (mag != null) {
+                magnitude.setVisibility(View.VISIBLE);
+                magnitude.setText(("Magnitude: " + mag));
+            }
 
             TextView dir_deaths = findViewById(R.id.wednesday);
-            dir_deaths.setVisibility(View.VISIBLE);
-            dir_deaths.setText(("Direct Deaths: " + (markerMap.get(id)).get("Dir_death")));
+            String ddeath = (markerMap.get(id)).get("Dir_death");
+            if (ddeath != null) {
+                dir_deaths.setVisibility(View.VISIBLE);
+                dir_deaths.setText(("Direct Deaths: " + ddeath));
+            }
 
             TextView indir_deaths = findViewById(R.id.thursday);
-            indir_deaths.setVisibility(View.VISIBLE);
-            indir_deaths.setText(("Indirect Deaths: " + (markerMap.get(id)).get("Indir_death")));
+            String ideath = (markerMap.get(id)).get("Indir_death");
+            if (ideath != null) {
+                indir_deaths.setVisibility(View.VISIBLE);
+                indir_deaths.setText(("Indirect Deaths: " + ideath));
+            }
 
             TextView dir_inj = findViewById(R.id.friday);
-            dir_inj.setVisibility(View.VISIBLE);
-            dir_inj.setText(("Direct Injuries: " + (markerMap.get(id)).get("Dir_inj")));
+            String dinj = (markerMap.get(id)).get("Dir_inj");
+            if (dinj != null) {
+                dir_inj.setVisibility(View.VISIBLE);
+                dir_inj.setText(("Direct Injuries: " + dinj));
+            }
 
             TextView indir_inj = findViewById(R.id.saturday);
-            indir_inj.setVisibility(View.VISIBLE);
-            indir_inj.setText(("Indirect Injuries: " + (markerMap.get(id)).get("Indir_inj")));
+            String iinj = (markerMap.get(id)).get("Indir_inj");
+            if (iinj != null) {
+                indir_inj.setVisibility(View.VISIBLE);
+                indir_inj.setText(("Indirect Injuries: " + iinj));
+            }
 
             TextView dp_cost = findViewById(R.id.sunday);
-            dp_cost.setVisibility(View.VISIBLE);
-            dp_cost.setText(("Damaged Property Costs: " + (markerMap.get(id)).get("DP_cost")));
+            String dp = (markerMap.get(id)).get("DP_cost");
+            if (dp != null) {
+                dp_cost.setVisibility(View.VISIBLE);
+                dp_cost.setText(("Damaged Property Costs: " + dp));
+            }
 
             TextView dc_cost = findViewById(R.id.website);
-            dc_cost.setVisibility(View.VISIBLE);
-            dc_cost.setText(("Crop Damage Costs: " + (markerMap.get(id)).get("DP_cost")));
+            String dc = (markerMap.get(id)).get("DC_cost");
+            if (dc != null) {
+                dc_cost.setVisibility(View.VISIBLE);
+                dc_cost.setText(("Crop Damage Costs: " + dc));
+            }
 
         } else {
             findViewById(R.id.hide).setVisibility(View.INVISIBLE);
-            Toast.makeText(getApplicationContext(), "Selected Location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Your Selected Location", Toast.LENGTH_LONG).show();
         }
 
         return false;

@@ -245,6 +245,7 @@ public class TableActivity extends AppCompatActivity {
 
                         //event.setVisibility(View.INVISIBLE);
                         event.setText("");
+                        event.append("Event: " + "    " + "County" + "    " + "State" + "    " + "Date" + "         " + "Type" + "\n");
 
                         for (int i = 0; i < events.size(); i++) {
                             if (buttonResponse.equals("")) {
