@@ -155,8 +155,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 //Initialize url
                                 /*String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
                                         "location=" + location.getLatitude() + "," + location.getLongitude() + //location latitude and lagitude
-                                        "&radius=25000" + //Nearby radius
-                                        "&keyword=" + "house" + //Place type
+                                        "&radius=50000" + //Nearby radius
+                                        "&keyword=" + "Johns Hopkins University" + //Place type
                                         "&sensor=true" + //Sensor
                                         "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
 
@@ -198,15 +198,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             googleMap.addMarker(options);
 
             //Initialize url
-            /*String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
+            String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + //Url
                     "location=" + list.get(0).getLatitude() + "," + list.get(0).getLongitude() + //location latitude and lagitude
                     "&radius=25000" + //Nearby radius
-                    "&keyword=" + "earthquake" + //Place type
+                    "&keyword=" + "www.jhu.edu" + //Place type
                     "&sensor=true" + //Sensor
                     "&key=AIzaSyBHLg1nZsUZhncmApmHksetMhXNzp9cZdU"; //Google maps api key
 
             //Execute place task method and download json data
-            new PlaceTask().execute(url);*/
+            new PlaceTask().execute(url);
             getTestEvents(googleMap);
         }
     }
@@ -432,7 +432,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Clear map
             //----------mMap.clear();------------
             //Use for loop
-            /*if (!(hashMaps == null)) {
+            if (!(hashMaps == null)) {
             for (int i = 0; i < hashMaps.size(); i++) {
                 //Initialize hsh map
                 final HashMap<String, String> hashMapList = hashMaps.get(i);
@@ -548,7 +548,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }else {
                 Toast.makeText(getApplicationContext(), "Site has no data",Toast.LENGTH_SHORT).show();
                 findViewById(R.id.hide).setVisibility(View.INVISIBLE);
-            }*/
+            }
 
 
         }
