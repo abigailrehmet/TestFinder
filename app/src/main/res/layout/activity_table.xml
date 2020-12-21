@@ -8,7 +8,7 @@
     android:isScrollContainer="true"
     android:orientation="vertical"
     android:scrollbars="horizontal"
-    tools:context=".MainActivity">
+    tools:context=".TableActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -257,6 +257,67 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:visibility="gone"></com.github.mikephil.charting.charts.BarChart>
+
+            <RadioGroup
+                android:id="@+id/extraOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_light_background"
+                android:isScrollContainer="true"
+                android:orientation="vertical"
+                android:scrollbars="vertical">
+
+                <RadioButton
+                    android:id="@+id/query1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="onAdvancedStatementsClicked"
+                    android:text="Click to see advanced query 1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/query2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="onAdvancedStatementsClicked"
+                    android:text="Click to see advanced query 2"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/query3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="onAdvancedStatementsClicked"
+                    android:text="Click to see advanced query 3"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/query4"
+                    android:layout_width="246dp"
+                    android:layout_height="46dp"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="onAdvancedStatementsClicked"
+                    android:text="Click to see advanced query 4"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:id="@+id/query5"
+                    android:layout_width="246dp"
+                    android:layout_height="46dp"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="onAdvancedStatementsClicked"
+                    android:text="Click to see advanced query 5"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+            </RadioGroup>
 
         </LinearLayout>
     </ScrollView>

@@ -173,7 +173,7 @@ public class TableActivity extends AppCompatActivity {
 
     }
 
-    //radio button values
+    //radio button values (death/injuries)
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -196,6 +196,17 @@ public class TableActivity extends AppCompatActivity {
                 if (checked)
                     buttonResponse = "Indirect injury";
                 break;
+        }
+    }
+
+    //radio button values (advanced sql queries)
+    public void onAdvancedStatementsClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            //do nothing for noe
         }
     }
 
