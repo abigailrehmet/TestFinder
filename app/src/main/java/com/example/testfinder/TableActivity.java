@@ -133,7 +133,6 @@ public class TableActivity extends AppCompatActivity {
                 q2out.setText("");
                 q3out.setText("");
                 q4out.setText("");
-                q5out.setText("");
             }
         });
 
