@@ -45,9 +45,9 @@ public class TableActivity extends AppCompatActivity {
     private static final String DEM_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/populations.php";
     private static final String BH_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/BH_percentage.php";
     private static final String StateTemp_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/State_temps.php";
-    private static final String TotalDeath_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Total_deaths.php";
-    private static final String EventCount_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Event_count.php";
-    private static final String NatDisaster_URL = "https://www.ugrad.cs.jhu.edu/~jcanedy1/Natty_disasters.php";
+    private static final String TotalDeath_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/total_deaths.php";
+    private static final String EventCount_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/event_count.php";
+    private static final String NatDisaster_URL = "https://www.ugrad.cs.jhu.edu/~arehmet1/natty_disasters.php";
     private ArrayList<Event> events;
     private ArrayList<Demographic> demographics;
     private ArrayList<BHPercentage> bhPercentages;
@@ -136,9 +136,9 @@ public class TableActivity extends AppCompatActivity {
                     //getTestEvents();
                     //getStateTemps();
                     //getBHPercentage();
-                    getTotalDeaths();
+                    //getTotalDeaths();
                     getEventCount();
-                    getNattyDisasters();
+                    //getNattyDisasters();
                 }
             }
         });
@@ -735,11 +735,8 @@ public class TableActivity extends AppCompatActivity {
                                 JSONObject object = array.getJSONObject(i);
 
                                 int direct_deaths = object.getInt("Direct_deaths");
-                                int indirect_deaths = object.getInt("Indirect_deaths");
-                                int indirect_injuries = object.getInt("Indirect_injuries");
-                                int direct_injuries = object.getInt("Direct_injuries");
 
-                                TotalDeath t = new TotalDeath(direct_deaths, indirect_deaths, direct_injuries, indirect_injuries);
+                                TotalDeath t = new TotalDeath(direct_deaths);
                                 totalDeaths.add(t);
                                 System.out.println("total deaths or injuries-->" + totalDeaths);
                             }
@@ -757,9 +754,9 @@ public class TableActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("death_option", "Direct_deaths");
                 params.put("weather", weather.getText().toString().trim());
                 params.put("year", "2018");
+                params.put("number", "4"); //ARE YOU FREAKING KIDDING MEEE LOL
 
                 return params;
             }
@@ -852,7 +849,6 @@ public class TableActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams(){
                 Map<String,String> params=new HashMap<String, String>();
-                params.put("death_option", "Direct_deaths");
                 params.put("number", "1");
                 params.put("state", state.getText().toString().trim());
 
