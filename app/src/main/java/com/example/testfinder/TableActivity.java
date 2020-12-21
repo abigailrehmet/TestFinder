@@ -127,8 +127,9 @@ public class TableActivity extends AppCompatActivity {
 
 
                 if (valid) {
-                    getTestEvents();
+                    //getTestEvents();
                     getStateTemps();
+                    //getBHPercentage();
                 }
             }
         });
@@ -175,6 +176,8 @@ public class TableActivity extends AppCompatActivity {
 
         events = new ArrayList<>();
         demographics = new ArrayList<>();
+        bhPercentages = new ArrayList<>();
+        stateTemps = new ArrayList<>();
 
     }
 
@@ -665,7 +668,7 @@ public class TableActivity extends AppCompatActivity {
                         try {
                             JSONArray array = new JSONArray(response);
                             System.out.println(array);
-                            events.clear();
+                            //events.clear();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject object = array.getJSONObject(i);
 
